@@ -48,7 +48,7 @@ class ThemePreviewPage extends StatelessWidget {
             const TextField(
               decoration: InputDecoration(
                 labelText: '이메일',
-                hintText: 'example@email.com',
+                hintText: 'jikyunghee@email.com',
               ),
             ),
             const SizedBox(height: 12),

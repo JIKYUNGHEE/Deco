@@ -1,12 +1,21 @@
 import 'package:deco/config/app_state.dart';
 import 'package:deco/routing/router.dart';
 import 'package:deco/ui/core/themes/deco_theme.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   final appState = AppState();
   initRouter(appState);
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(ChangeNotifierProvider.value(value: appState, child: const MyApp()));
 }
