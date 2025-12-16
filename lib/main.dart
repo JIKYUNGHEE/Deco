@@ -1,12 +1,14 @@
 import 'package:deco/config/app_state.dart';
 import 'package:deco/routing/router.dart';
+import 'package:deco/ui/core/themes/deco_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(create: (_) => AppState(), child: const MyApp()),
-  );
+  final appState = AppState();
+  initRouter(appState);
+
+  runApp(ChangeNotifierProvider.value(value: appState, child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -15,15 +17,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final appState = context.watch<AppState>();
-    final router = createRouter(appState);
-
     return MaterialApp.router(
-      routerConfig: router,
+      routerConfig: appRouter,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: DecoTheme.light(),
+      darkTheme: DecoTheme.dark(),
+      themeMode: ThemeMode.system,
+      themeAnimationDuration: Duration.zero,
     );
   }
 }

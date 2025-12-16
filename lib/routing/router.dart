@@ -2,6 +2,7 @@ import 'package:deco/config/app_state.dart';
 import 'package:deco/ui/calendar/calendar_screen.dart';
 import 'package:deco/ui/connect/connect_screen.dart';
 import 'package:deco/ui/core/ui/frame_page.dart';
+import 'package:deco/ui/debug/theme_preview_page.dart';
 import 'package:deco/ui/home/home_screen.dart';
 import 'package:deco/ui/login/login_screen.dart';
 import 'package:deco/ui/mypage/mypage_screen.dart';
@@ -23,13 +24,22 @@ final GlobalKey<NavigatorState> _calenderTabNavigatorKey =
 final GlobalKey<NavigatorState> _mypageTabNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'mypageTab');
 
+late final GoRouter appRouter;
+
+void initRouter(AppState appState) {
+  appRouter = createRouter(appState);
+}
+
+
 GoRouter createRouter(AppState appState) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: '/onboarding',
+    initialLocation: '/theme',
     refreshListenable: appState,
     redirect: (context, state) {
       final loc = state.matchedLocation;
+
+      if(loc == '/theme') return null;
 
       final inOnboarding = loc == '/onboarding';
       final inLogin = loc == '/login';
@@ -56,6 +66,7 @@ GoRouter createRouter(AppState appState) {
       return null;
     },
     routes: [
+      GoRoute(path: '/theme', builder: (context, state) => ThemePreviewPage()),
       GoRoute(path: '/onboarding', builder: (context, state) => Onboarding()),
       GoRoute(path: '/login', builder: (context, state) => LoginScreen()),
       GoRoute(path: '/connect', builder: (context, state) => ConnectScreen()),
