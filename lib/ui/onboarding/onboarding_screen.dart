@@ -79,7 +79,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 const SizedBox(height: 12),
                                 DecoOutlinedButton(
                                   label: '회원가입',
-                                  onPressed: () => context.go('/signup'),
+                                  onPressed: () => context.go('/terms'),
                                 ),
                               ],
                             )

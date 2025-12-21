@@ -7,6 +7,7 @@ import 'package:deco/ui/home/home_screen.dart';
 import 'package:deco/ui/login/login_screen.dart';
 import 'package:deco/ui/mypage/mypage_screen.dart';
 import 'package:deco/ui/onboarding/onboarding_screen.dart';
+import 'package:deco/ui/terms/terms_agree_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -36,38 +37,39 @@ GoRouter createRouter(AppState appState) {
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/onboarding',
     refreshListenable: appState,
-    redirect: (context, state) {
-      final loc = state.matchedLocation;
-
-      if(loc == '/theme') return null;
-
-      final inOnboarding = loc == '/onboarding';
-      final inLogin = loc == '/login';
-      final inConnect = loc == '/connect';
-
-      final inShell = loc == '/home' || loc =='/course' || loc == '/calendar' || loc == '/mypage';
-
-      if(!appState.onboardingDone) {
-        return inOnboarding ? null : '/onboarding';
-      }
-
-      if(!appState.signedIn) {
-        return inLogin ? null : '/login';
-      }
-
-      if(!appState.coupleConnected) {
-        return inConnect ? null : '/connect';
-      }
-
-      if(inOnboarding || inLogin || inConnect) {
-        return '/home';
-      }
-
-      return null;
-    },
+    // redirect: (context, state) {
+    //   final loc = state.matchedLocation;
+    //
+    //   if(loc == '/theme') return null;
+    //
+    //   final inOnboarding = loc == '/onboarding';
+    //   final inLogin = loc == '/login';
+    //   final inConnect = loc == '/connect';
+    //
+    //   final inShell = loc == '/home' || loc =='/course' || loc == '/calendar' || loc == '/mypage';
+    //
+    //   if(!appState.onboardingDone) {
+    //     return inOnboarding ? null : '/onboarding';
+    //   }
+    //
+    //   if(!appState.signedIn) {
+    //     return inLogin ? null : '/login';
+    //   }
+    //
+    //   if(!appState.coupleConnected) {
+    //     return inConnect ? null : '/connect';
+    //   }
+    //
+    //   if(inOnboarding || inLogin || inConnect) {
+    //     return '/home';
+    //   }
+    //
+    //   return null;
+    // },
     routes: [
       GoRoute(path: '/theme', builder: (context, state) => ThemePreviewPage()),
       GoRoute(path: '/onboarding', builder: (context, state) => OnboardingScreen()),
+      GoRoute(path: '/terms', builder: (context, state) => TermsAgreeScreen()),
       GoRoute(path: '/login', builder: (context, state) => LoginScreen()),
       GoRoute(path: '/connect', builder: (context, state) => ConnectScreen()),
       StatefulShellRoute.indexedStack(
