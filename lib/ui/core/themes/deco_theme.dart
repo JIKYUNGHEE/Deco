@@ -1,4 +1,5 @@
 import 'package:deco/ui/core/themes/app_colors.dart';
+import 'package:deco/ui/core/themes/deco_theme_extension.dart';
 import 'package:flutter/material.dart';
 
 import 'deco_text_theme.dart';
@@ -29,6 +30,7 @@ class DecoTheme {
       fontFamily: 'Cafe24SsurroundAir',
       colorScheme: colorScheme,
       scaffoldBackgroundColor: AppColors.bg,
+      extensions: const <ThemeExtension<dynamic>> [DecoThemeExtension.light],
 
       textTheme: textTheme,
       primaryTextTheme: textTheme,
@@ -164,6 +166,7 @@ class DecoTheme {
       primaryTextTheme: textTheme,
 
       scaffoldBackgroundColor: AppColors.darkBg,
+      extensions: const <ThemeExtension<dynamic>> [DecoThemeExtension.dark],
 
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,

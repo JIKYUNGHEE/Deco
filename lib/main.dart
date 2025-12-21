@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
   // This widgets is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp.router(
       routerConfig: appRouter,
       title: 'Flutter Demo',
