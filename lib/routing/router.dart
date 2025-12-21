@@ -1,3 +1,4 @@
+import 'package:deco/auth/email_verify_screen.dart';
 import 'package:deco/auth/signup_screen.dart';
 import 'package:deco/config/app_state.dart';
 import 'package:deco/ui/calendar/calendar_screen.dart';
@@ -72,6 +73,11 @@ GoRouter createRouter(AppState appState) {
       GoRoute(path: '/onboarding', builder: (context, state) => OnboardingScreen()),
       GoRoute(path: '/terms', builder: (context, state) => TermsAgreeScreen()),
       GoRoute(path: '/signup', builder: (context, state) => SignupScreen()),
+      GoRoute(
+          path: '/verify-email', builder: (context, state) {
+        final email = state.extra as String;
+        return EmailVerifyScreen(email: email);
+      }),
       GoRoute(path: '/login', builder: (context, state) => LoginScreen()),
       GoRoute(path: '/connect', builder: (context, state) => ConnectScreen()),
       StatefulShellRoute.indexedStack(

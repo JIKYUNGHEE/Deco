@@ -185,7 +185,9 @@ class _SignupScreenState extends State<SignupScreen> {
                           const SizedBox(height: 14),
 
                           // CTA
-                          DecoPrimaryButton(label: '회원가입', onPressed: () {}),
+                          DecoPrimaryButton(label: '회원가입', onPressed: () {
+                            context.go('/verify-email', extra: _emailCtrl.text.trim());
+                          }),
 
                           const SizedBox(height: 18),
 

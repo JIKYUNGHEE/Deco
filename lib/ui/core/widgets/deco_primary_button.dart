@@ -10,6 +10,8 @@ class DecoPrimaryButton extends StatelessWidget {
   final double radius;
   final double fontSize;
 
+  final Widget? prefixIcon;
+
   const DecoPrimaryButton({
     super.key,
     required this.label,
@@ -18,6 +20,7 @@ class DecoPrimaryButton extends StatelessWidget {
     this.height = 52,
     this.radius = 14,
     this.fontSize = 16,
+    this.prefixIcon,
   });
 
   bool get _enabled => onPressed != null && !isLoading;
@@ -61,14 +64,24 @@ class DecoPrimaryButton extends StatelessWidget {
                           color: Colors.white,
                         ),
                       )
-                    : Text(
-                        label,
-                        style: TextStyle(
-                          fontSize: fontSize,
-                          fontWeight: FontWeight.w700,
-                          color: disabled ? decoTheme!.disabledText : Colors.white,
-                        ),
-                      ),
+                    : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if(prefixIcon != null) ... [
+                          IconTheme(data: const IconThemeData(size: 20, color: Colors.white), child: prefixIcon!),
+                          const SizedBox(width: 8,),
+                        ],
+                        Text(
+                            label,
+                            style: TextStyle(
+                              fontSize: fontSize,
+                              fontWeight: FontWeight.w700,
+                              color: disabled ? decoTheme!.disabledText : Colors.white,
+                            ),
+                          ),
+                      ],
+                    ),
               ),
             ),
           ),

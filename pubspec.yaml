@@ -39,6 +39,7 @@ dependencies:
   firebase_core: ^4.3.0
   firebase_auth: ^6.1.3
   url_launcher: ^6.3.2
+  flutter_svg: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -65,6 +66,7 @@ flutter:
   # To add assets to your application, add an assets sections, like this:
   assets:
     - assets/fonts/
+    - assets/illustrations/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
