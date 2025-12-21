@@ -17,6 +17,8 @@ class DecoThemeExtension extends ThemeExtension<DecoThemeExtension> {
   final Color outlinePressed;
   final Color overlayBase;
 
+  final Color error;
+
   const DecoThemeExtension({
     required this.primaryGradient,
     required this.textPrimary,
@@ -27,6 +29,7 @@ class DecoThemeExtension extends ThemeExtension<DecoThemeExtension> {
     required this.disabledText,
     required this.outlinePressed,
     required this.overlayBase,
+    required this.error,
   });
   static const light = DecoThemeExtension(
     primaryGradient: LinearGradient(
@@ -45,6 +48,7 @@ class DecoThemeExtension extends ThemeExtension<DecoThemeExtension> {
     disabledBg: AppColors.gray200,
     outlinePressed: AppColors.primary,
     overlayBase: AppColors.primary,
+    error: AppColors.error,
   );
 
   static const dark = DecoThemeExtension(
@@ -64,6 +68,7 @@ class DecoThemeExtension extends ThemeExtension<DecoThemeExtension> {
     disabledBg: AppColors.gray800,
     outlinePressed: AppColors.primaryDark,
     overlayBase: AppColors.primaryDark,
+    error: AppColors.errorDark,
   );
 
   @override
@@ -77,6 +82,7 @@ class DecoThemeExtension extends ThemeExtension<DecoThemeExtension> {
     Color? disabledBg,
     Color? outlinePressed,
     Color? overlayBase,
+    Color? error,
   }) {
     return DecoThemeExtension(
       primaryGradient: primaryGradient ?? this.primaryGradient,
@@ -88,6 +94,7 @@ class DecoThemeExtension extends ThemeExtension<DecoThemeExtension> {
       disabledBg: disabledBg ?? this.disabledBg,
       outlinePressed: outlinePressed ?? this.outlinePressed,
       overlayBase: overlayBase ?? this.overlayBase,
+      error: error ?? this.error,
     );
   }
 
@@ -105,6 +112,7 @@ class DecoThemeExtension extends ThemeExtension<DecoThemeExtension> {
       disabledBg: Color.lerp(disabledBg, other.disabledBg, t)!,
       outlinePressed: Color.lerp(outlinePressed, other.outlinePressed, t)!,
       overlayBase: Color.lerp(overlayBase, other.overlayBase, t)!,
+      error: Color.lerp(error, other.error, t)!,
     );
   }
 }

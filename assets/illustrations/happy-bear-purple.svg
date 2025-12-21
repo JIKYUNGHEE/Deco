@@ -1,0 +1,39 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="happy-purple-body" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D8B4FE" />
+      <stop offset="100%" style="stop-color:#C084FC" />
+    </linearGradient>
+    <filter id="shadow-happy">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <!-- Body -->
+  <ellipse cx="60" cy="75" rx="30" ry="25" fill="url(#happy-purple-body)" filter="url(#shadow-happy)" />
+
+  <!-- Head -->
+  <circle cx="60" cy="40" r="30" fill="url(#happy-purple-body)" filter="url(#shadow-happy)" />
+
+  <!-- Ears -->
+  <circle cx="40" cy="20" r="12" fill="#A855F7" filter="url(#shadow-happy)" />
+  <circle cx="80" cy="20" r="12" fill="#A855F7" filter="url(#shadow-happy)" />
+
+  <!-- Happy Eyes -->
+  <path d="M 48 35 Q 50 38 52 35" stroke="#1F2937" stroke-width="2" fill="none" stroke-linecap="round" />
+  <path d="M 68 35 Q 70 38 72 35" stroke="#1F2937" stroke-width="2" fill="none" stroke-linecap="round" />
+
+  <!-- Smile -->
+  <path d="M 48 48 Q 60 55 72 48" stroke="#1F2937" stroke-width="2" fill="none" stroke-linecap="round" />
+
+  <!-- Nose -->
+  <ellipse cx="60" cy="45" rx="5" ry="4" fill="white" opacity="0.8" />
+
+  <!-- Arms -->
+  <ellipse cx="30" cy="70" rx="10" ry="15" fill="#C084FC" opacity="0.8" transform="rotate(-30 30 70)" />
+  <ellipse cx="90" cy="70" rx="10" ry="15" fill="#C084FC" opacity="0.8" transform="rotate(30 90 70)" />
+
+  <!-- Sparkles -->
+  <text x="20" y="30" font-size="16">✨</text>
+  <text x="95" y="35" font-size="16">✨</text>
+</svg>

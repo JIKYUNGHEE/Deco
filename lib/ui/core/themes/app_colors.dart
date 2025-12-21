@@ -14,6 +14,9 @@ class AppColors {
   static const gray800 = Color(0xFF1F2937);
   static const gray900Dark = Color(0xFF111827);
 
+  static const error = Color(0xFFE44D61);
+  static const errorDark = Color(0xFFFF6B7A);
+
   // Brand
   static const primary = Color(0xFFFF4FA3); // 핑크(메인 버튼/포인트)
   static const secondary = Color(0xFF8B5CF6); // 퍼플(서브 포인트)

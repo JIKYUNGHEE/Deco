@@ -1,0 +1,40 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="wave-purple-body" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D8B4FE" />
+      <stop offset="100%" style="stop-color:#C084FC" />
+    </linearGradient>
+    <filter id="shadow-wave">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <!-- Body -->
+  <ellipse cx="60" cy="80" rx="28" ry="25" fill="url(#wave-purple-body)" filter="url(#shadow-wave)" />
+
+  <!-- Head -->
+  <circle cx="60" cy="45" r="30" fill="url(#wave-purple-body)" filter="url(#shadow-wave)" />
+
+  <!-- Ears -->
+  <circle cx="40" cy="25" r="12" fill="#A855F7" filter="url(#shadow-wave)" />
+  <circle cx="80" cy="25" r="12" fill="#A855F7" filter="url(#shadow-wave)" />
+
+  <!-- Eyes -->
+  <circle cx="50" cy="42" r="3" fill="#1F2937" />
+  <circle cx="70" cy="42" r="3" fill="#1F2937" />
+
+  <!-- Nose -->
+  <ellipse cx="60" cy="50" rx="5" ry="4" fill="white" opacity="0.8" />
+
+  <!-- Smile -->
+  <path d="M 50 56 Q 60 60 70 56" stroke="#1F2937" stroke-width="2" fill="none" stroke-linecap="round" />
+
+  <!-- Blush -->
+  <ellipse cx="42" cy="53" rx="5" ry="4" fill="#A855F7" opacity="0.4" />
+  <ellipse cx="78" cy="53" rx="5" ry="4" fill="#A855F7" opacity="0.4" />
+
+  <!-- Waving Arm -->
+  <ellipse cx="90" cy="60" rx="8" ry="18" fill="#C084FC" opacity="0.9" transform="rotate(45 90 60)" />
+  <!-- Hand -->
+  <circle cx="95" cy="50" r="6" fill="#D8B4FE" />
+</svg>

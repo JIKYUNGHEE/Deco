@@ -174,8 +174,7 @@ class _TermsAgreeScreenState extends State<TermsAgreeScreen> {
                               child: DecoPrimaryButton(
                                 label: '동의하고 데코 시작하기  ❤',
                                 onPressed: () {
-                                  // TODO: (필수 동의 저장) 후 다음 단계
-                                  // 예: context.go('/signup'); 또는 홈/커플연결
+                                  context.go('/signup');
                                 },
                               ),
                             ),
