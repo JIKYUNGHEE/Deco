@@ -34,7 +34,7 @@ void initRouter(AppState appState) {
 GoRouter createRouter(AppState appState) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: '/theme',
+    initialLocation: '/onboarding',
     refreshListenable: appState,
     redirect: (context, state) {
       final loc = state.matchedLocation;
@@ -67,7 +67,7 @@ GoRouter createRouter(AppState appState) {
     },
     routes: [
       GoRoute(path: '/theme', builder: (context, state) => ThemePreviewPage()),
-      GoRoute(path: '/onboarding', builder: (context, state) => Onboarding()),
+      GoRoute(path: '/onboarding', builder: (context, state) => OnboardingScreen()),
       GoRoute(path: '/login', builder: (context, state) => LoginScreen()),
       GoRoute(path: '/connect', builder: (context, state) => ConnectScreen()),
       StatefulShellRoute.indexedStack(

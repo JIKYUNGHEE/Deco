@@ -1,9 +1,25 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  // ===== Neutral (Light) =====
+  static const gray900 = Color(0xFF111827);
+  static const gray700 = Color(0xFF374151);
+  static const gray500 = Color(0xFF6B7280);
+  static const gray300 = Color(0xFFD1D5DB);
+  static const gray200 = Color(0xFFE5E7EB);
+// ===== Neutral (Dark) =====
+  static const gray50  = Color(0xFFF9FAFB);
+  static const gray400 = Color(0xFF9CA3AF);
+  static const gray600 = Color(0xFF4B5563);
+  static const gray800 = Color(0xFF1F2937);
+  static const gray900Dark = Color(0xFF111827);
+
   // Brand
   static const primary = Color(0xFFFF4FA3); // 핑크(메인 버튼/포인트)
   static const secondary = Color(0xFF8B5CF6); // 퍼플(서브 포인트)
+
+  static const primaryDark = Color(0xFFB93D87);
+  static const secondaryDark = Color(0xFF5A45CC);
 
   // Accent (홈 카드들에 보이는 주황 계열)
   static const accentOrange = Color(0xFFFFA62B);
