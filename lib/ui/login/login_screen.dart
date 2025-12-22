@@ -130,6 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             DecoPrimaryButton(
                               label: '로그인',
                               onPressed: () {
+                                context.go('/connect');
                               },
                             ),
 
