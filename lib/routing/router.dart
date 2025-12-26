@@ -6,6 +6,7 @@ import 'package:deco/ui/connect/couple_connect_screen.dart';
 import 'package:deco/ui/connect/create_couple_room_screen.dart';
 import 'package:deco/ui/core/ui/frame_page.dart';
 import 'package:deco/ui/debug/theme_preview_page.dart';
+import 'package:deco/ui/enter_invitation_code_screen.dart';
 import 'package:deco/ui/home/home_screen.dart';
 import 'package:deco/ui/login/login_screen.dart';
 import 'package:deco/ui/mypage/mypage_screen.dart';
@@ -82,6 +83,7 @@ GoRouter createRouter(AppState appState) {
       GoRoute(path: '/login', builder: (context, state) => LoginScreen()),
       GoRoute(path: '/connect', builder: (context, state) => CoupleConnectScreen()),
       GoRoute(path: '/create-room', builder: (context, state) => CreateCoupleRoomScreen()),
+      GoRoute(path: '/enter-code', builder: (context, state) => EnterInvitationCodeScreen()),
       StatefulShellRoute.indexedStack(
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state, navigationShell) {

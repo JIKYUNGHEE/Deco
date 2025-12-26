@@ -88,6 +88,7 @@ class CoupleConnectScreen extends StatelessWidget {
                       radius: 60,
                       label: '초대 코드 입력하기',
                       onPressed: () {
+                        context.go('/enter-code');
                       },
                     ),
                     const SizedBox(height: 16),
