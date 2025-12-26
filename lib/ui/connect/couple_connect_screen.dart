@@ -32,7 +32,10 @@ class CoupleConnectScreen extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () => context.pop(),
-                      icon: Icon(Icons.chevron_left, color: decoTheme.textPrimary),
+                      icon: Icon(
+                        Icons.chevron_left,
+                        color: decoTheme.textPrimary,
+                      ),
                     ),
                   ],
                 ),
@@ -76,13 +79,16 @@ class CoupleConnectScreen extends StatelessWidget {
                       radius: 60,
                       label: '커플 방 만들기',
                       prefixIcon: const Icon(Icons.link),
-                      onPressed: () {},
+                      onPressed: () {
+                        context.go('/create-room');
+                      },
                     ),
                     const SizedBox(height: 12),
                     DecoOutlinedButton(
                       radius: 60,
                       label: '초대 코드 입력하기',
-                      onPressed: () {},
+                      onPressed: () {
+                      },
                     ),
                     const SizedBox(height: 16),
                     Text(
@@ -103,7 +109,7 @@ class CoupleConnectScreen extends StatelessWidget {
           ),
         ),
       ),
-      );
+    );
   }
 }
 
