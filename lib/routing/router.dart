@@ -1,12 +1,11 @@
-import 'package:deco/auth/email_verify_screen.dart';
-import 'package:deco/auth/signup_screen.dart';
 import 'package:deco/config/app_state.dart';
 import 'package:deco/ui/calendar/calendar_screen.dart';
+import 'package:deco/ui/connect/complete_couple_screen.dart';
 import 'package:deco/ui/connect/couple_connect_screen.dart';
 import 'package:deco/ui/connect/create_couple_room_screen.dart';
 import 'package:deco/ui/core/ui/frame_page.dart';
 import 'package:deco/ui/debug/theme_preview_page.dart';
-import 'package:deco/ui/enter_invitation_code_screen.dart';
+import 'package:deco/ui/connect/enter_invitation_code_screen.dart';
 import 'package:deco/ui/home/home_screen.dart';
 import 'package:deco/ui/login/login_screen.dart';
 import 'package:deco/ui/mypage/mypage_screen.dart';
@@ -15,6 +14,8 @@ import 'package:deco/ui/terms/terms_agree_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../ui/auth/email_verify_screen.dart';
+import '../ui/auth/signup_screen.dart';
 import '../ui/course/list/course_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(
@@ -84,6 +85,7 @@ GoRouter createRouter(AppState appState) {
       GoRoute(path: '/connect', builder: (context, state) => CoupleConnectScreen()),
       GoRoute(path: '/create-room', builder: (context, state) => CreateCoupleRoomScreen()),
       GoRoute(path: '/enter-code', builder: (context, state) => EnterInvitationCodeScreen()),
+      GoRoute(path: '/connect-complete', builder: (context, state) => CompleteCoupleScreen()),
       StatefulShellRoute.indexedStack(
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state, navigationShell) {

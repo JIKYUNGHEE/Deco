@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../ui/core/themes/deco_theme_extension.dart';
-import '../ui/core/widgets/deco_primary_button.dart';
-import '../ui/core/widgets/deco_text_field.dart';
+import '../core/themes/deco_theme_extension.dart';
+import '../core/widgets/deco_card.dart';
+import '../core/widgets/deco_primary_button.dart';
+import '../core/widgets/deco_text_field.dart';
 import 'bear_in_love_illustration.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -65,7 +66,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   padding: EdgeInsets.fromLTRB(20, 20, 20, 20 + bottomInset),
                   keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                   child: ConstrainedBox(constraints: BoxConstraints(minHeight: constraints.maxHeight - 40),child: Center(
-                    child: _SignupCard(
+                    child: DecoCard(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -225,33 +226,6 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _SignupCard extends StatelessWidget {
-  final Widget child;
-
-  const _SignupCard({required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      constraints: const BoxConstraints(maxWidth: 380),
-      padding: const EdgeInsets.fromLTRB(18, 10, 18, 18),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.92),
-        borderRadius: BorderRadius.circular(28),
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 28,
-            offset: Offset(0, 18),
-            color: Color(0x1A000000),
-          ),
-        ],
-      ),
-      child: child,
     );
   }
 }

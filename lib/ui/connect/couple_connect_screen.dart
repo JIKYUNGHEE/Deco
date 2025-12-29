@@ -147,8 +147,11 @@ class _CoupleIllustCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // SvgPicture.asset('assets/images/pink-bear.svg', width: 92),
               SvgPicture.asset('assets/illustrations/pink-bear.svg', width: 92),
-              Column(
+              Stack(
+                alignment: Alignment.center,
+
                 children: [
                   const SizedBox(height: 22),
                   Icon(
@@ -157,7 +160,6 @@ class _CoupleIllustCard extends StatelessWidget {
                     size: 18,
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 6),
                     width: 42,
                     height: 2,
                     decoration: BoxDecoration(

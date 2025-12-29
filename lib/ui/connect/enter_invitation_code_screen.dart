@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import 'connect/widgets/couple_code_input_field.dart';
-import 'core/themes/app_colors.dart';
-import 'core/themes/deco_theme_extension.dart';
+import 'widgets/couple_code_input_field.dart';
+import '../core/themes/app_colors.dart';
+import '../core/themes/deco_theme_extension.dart';
 
 class EnterInvitationCodeScreen extends StatefulWidget {
   const EnterInvitationCodeScreen({super.key});
@@ -110,7 +110,9 @@ class _EnterInvitationCodeScreenState extends State<EnterInvitationCodeScreen> {
                                 ),
                               ),
                             )
-                          : DecoPrimaryButton(label: '연결하기', onPressed: () {}, radius: 60, height: 58,),
+                          : DecoPrimaryButton(label: '연결하기', onPressed: () {
+                            context.go('/connect-complete');
+                      }, radius: 60, height: 58,),
                     ),
                   ],
                 ),

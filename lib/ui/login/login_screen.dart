@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../auth/bear_in_love_illustration.dart';
+import '../auth/bear_in_love_illustration.dart';
 import '../core/themes/deco_theme_extension.dart';
 import '../core/widgets/deco_primary_button.dart';
 import '../core/widgets/deco_outlined_button.dart';

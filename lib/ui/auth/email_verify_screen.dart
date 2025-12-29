@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../ui/core/themes/deco_theme_extension.dart';
-import '../ui/core/widgets/deco_primary_button.dart';
+import '../core/themes/deco_theme_extension.dart';
+import '../core/widgets/deco_card.dart';
+import '../core/widgets/deco_primary_button.dart';
+
 
 class EmailVerifyScreen extends StatelessWidget {
   final String email; // 회원가입에서 전달
@@ -41,7 +43,7 @@ class EmailVerifyScreen extends StatelessWidget {
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: _Card(
+                child: DecoCard(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -152,32 +154,6 @@ class EmailVerifyScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _Card extends StatelessWidget {
-  final Widget child;
-  const _Card({required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      constraints: const BoxConstraints(maxWidth: 380),
-      padding: const EdgeInsets.fromLTRB(18, 10, 18, 18),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.92),
-        borderRadius: BorderRadius.circular(28),
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 28,
-            offset: Offset(0, 18),
-            color: Color(0x1A000000),
-          ),
-        ],
-      ),
-      child: child,
     );
   }
 }

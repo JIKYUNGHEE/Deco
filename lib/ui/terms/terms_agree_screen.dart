@@ -1,3 +1,4 @@
+import 'package:deco/ui/core/widgets/deco_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -81,7 +82,7 @@ class _TermsAgreeScreenState extends State<TermsAgreeScreen> {
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: _Card(
+                    child: DecoCard(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -189,32 +190,6 @@ class _TermsAgreeScreenState extends State<TermsAgreeScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _Card extends StatelessWidget {
-  final Widget child;
-
-  const _Card({required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(20, 22, 20, 22),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.92),
-        borderRadius: BorderRadius.circular(28),
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 28,
-            offset: Offset(0, 18),
-            color: Color(0x1A000000),
-          ),
-        ],
-      ),
-      child: child,
     );
   }
 }
