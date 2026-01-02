@@ -62,6 +62,6 @@ class AppColors {
   static const warmGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [primary, accentOrange],
+    colors: [accentOrange, primary],
   );
 }

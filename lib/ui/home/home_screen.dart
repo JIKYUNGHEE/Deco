@@ -1,3 +1,4 @@
+import 'package:deco/ui/home/widgets/components/next_date_card.dart';
 import 'package:deco/ui/home/widgets/sections/home_summary_section.dart';
 import 'package:flutter/material.dart';
 
@@ -17,8 +18,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             HomeSummarySection(),
-            SizedBox(height: 24,),
-
+            SizedBox(height: 78,),
+            NextDateCard(),
           ],
         ),
       ),

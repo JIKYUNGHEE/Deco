@@ -22,15 +22,11 @@ class QuickActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('QuickActionCard tapped: $title, selected=$selected');
     final r = BorderRadius.circular(26);
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: (){
-        print('QuickActionCard tapped: $title, selected=$selected');
-        onTap?.call();
-      },
+      onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
         curve: Curves.easeOut,
