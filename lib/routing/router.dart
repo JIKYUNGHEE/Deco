@@ -40,7 +40,7 @@ void initRouter(AppState appState) {
 GoRouter createRouter(AppState appState) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: '/onboarding',
+    initialLocation: '/home',
     refreshListenable: appState,
     // redirect: (context, state) {
     //   final loc = state.matchedLocation;
