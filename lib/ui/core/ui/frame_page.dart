@@ -1,34 +1,38 @@
+import 'package:deco/ui/core/ui/deco_bottom_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class FramePage extends StatelessWidget {
+class FramePage extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
 
   const FramePage({super.key, required this.navigationShell});
 
+  @override
+  State<FramePage> createState() => _FramePageState();
+}
+
+class _FramePageState extends State<FramePage> {
+  bool _bearIsPink = true;
+
   void _onTap(int index) {
-    navigationShell.goBranch(
+    setState(() {
+      _bearIsPink = !_bearIsPink;
+    });
+
+    widget.navigationShell.goBranch(
       index,
-      initialLocation: index == navigationShell.currentIndex,
+      initialLocation: index == widget.navigationShell.currentIndex,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: navigationShell,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: _onTap,
-        destinations: [
-          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-          NavigationDestination(icon: Icon(Icons.map), label: 'course'),
-          NavigationDestination(
-            icon: Icon(Icons.calendar_month),
-            label: 'calendar',
-          ),
-          NavigationDestination(icon: Icon(Icons.login), label: 'mypage'),
-        ],
+      body: widget.navigationShell,
+      bottomNavigationBar: DecoBottomNavbar(
+        currentIndex: widget.navigationShell.currentIndex,
+        bearIsPink: _bearIsPink,
+        onTap: _onTap,
       ),
     );
   }
