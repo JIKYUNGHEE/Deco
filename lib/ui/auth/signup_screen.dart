@@ -137,10 +137,11 @@ class _SignupScreenState extends State<SignupScreen> {
 
     if (!_validateAll()) return;
 
+    String nickname = _nicknameCtrl.text.trim();
     String email = _emailCtrl.text.trim();
     String password = _pwCtrl.text.trim();
     _auth
-        .signUpWithEmail(email: email, password: password)
+        .signUpWithEmail(nickname: nickname, email: email, password: password)
         .then((_) {
           if (mounted) {
             context.go('/verify-email', extra: _emailCtrl.text.trim());
@@ -236,14 +237,13 @@ class _SignupScreenState extends State<SignupScreen> {
 
                             const SizedBox(height: 18),
 
-                            // _Label('닉네임'),
-                            // const SizedBox(height: 8),
-                            // DecoTextField(
-                            //   controller: _nicknameCtrl,
-                            //   hintText: '예) 한결커플닉네임',
-                            // ),
-                            //
-                            // const SizedBox(height: 14),
+                            _Label('닉네임'),
+                            const SizedBox(height: 8),
+                            DecoTextField(
+                              controller: _nicknameCtrl,
+                            ),
+
+                            const SizedBox(height: 14),
 
                             // 이메일
                             _Label('이메일'),

@@ -1,13 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseAuthService {
   final FirebaseAuth _auth;
+  final FirebaseFirestore _fs = FirebaseFirestore.instance;
 
   FirebaseAuthService() : _auth = FirebaseAuth.instance {
     _auth.setLanguageCode('kr');
   }
 
   Future<void> signUpWithEmail({
+    required String nickname,
     required String email,
     required String password,
   }) async {
@@ -36,8 +39,15 @@ class FirebaseAuthService {
     }
 
     if (errorMessage != null) {
+      print(errorMessage);
       throw Exception(errorMessage);
     }
+
+    await _fs.collection('users').doc(_auth.currentUser?.uid).set({
+      'email': email,
+      'nickname': nickname,
+      'createdAt': FieldValue.serverTimestamp(),
+    });
 
     await _auth.currentUser?.sendEmailVerification();
   }
@@ -49,8 +59,8 @@ class FirebaseAuthService {
     String? errorMessage;
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-    } on FirebaseAuthException catch(error) {
-      switch(error.code) {
+    } on FirebaseAuthException catch (error) {
+      switch (error.code) {
         case 'user-not-found':
           errorMessage = '해당 이메일로 가입된 사용자가 없습니다.';
           break;
@@ -66,11 +76,11 @@ class FirebaseAuthService {
         default:
           errorMessage = error.message ?? '알 수 없는 오류가 발생했습니다.';
       }
-    } catch(error) {
+    } catch (error) {
       errorMessage = '알 수 없는 오류가 발생했습니다.';
     }
 
-    if(errorMessage != null) {
+    if (errorMessage != null) {
       throw Exception(errorMessage);
     }
   }
@@ -80,7 +90,7 @@ class FirebaseAuthService {
   }
 
   Future<void> signOut() async {
-    try{
+    try {
       await _auth.signOut();
     } catch (e) {
       throw Exception(e.toString());
