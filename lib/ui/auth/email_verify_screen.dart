@@ -130,6 +130,7 @@ class EmailVerifyScreen extends StatelessWidget {
                         label: '이메일 인증 확인',
                         prefixIcon: const Icon(Icons.check_circle_outline, color: Colors.white),
                         onPressed: () {
+                          context.go('/login');
                         },
                       ),
 
