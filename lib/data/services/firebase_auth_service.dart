@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deco/domain/models/couple.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseAuthService {
@@ -99,5 +100,15 @@ class FirebaseAuthService {
 
   Future<void> deleteAccount() async {
     //계정삭제 코드 작성
+  }
+
+  Future<void> updateCoupleNickname(Couple couple, String nickname1, String nickname2) async {
+    await _fs.collection('users').doc(couple.invitee).update({
+      'nickname': nickname1,
+    });
+
+    await _fs.collection('users').doc(couple.invitor).update({
+      'nickname': nickname2,
+    });
   }
 }

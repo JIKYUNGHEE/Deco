@@ -1,15 +1,58 @@
+import 'package:deco/data/services/couple_service.dart';
+import 'package:deco/data/services/firebase_auth_service.dart';
 import 'package:deco/ui/core/themes/app_colors.dart';
 import 'package:deco/ui/core/widgets/deco_card.dart';
-import 'package:deco/ui/core/widgets/deco_outlined_button.dart';
-import 'package:deco/ui/core/widgets/deco_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
+import '../../domain/models/couple.dart';
 import '../core/themes/deco_theme_extension.dart';
 
-class CompleteCoupleScreen extends StatelessWidget {
-  const CompleteCoupleScreen({super.key});
+class CompleteCoupleScreen extends StatefulWidget {
+  CompleteCoupleScreen({super.key});
+
+  @override
+  State<CompleteCoupleScreen> createState() => _CompleteCoupleScreenState();
+}
+
+class _CompleteCoupleScreenState extends State<CompleteCoupleScreen> {
+  final _auth = FirebaseAuthService();
+
+  final _coupleService = CoupleService();
+  final _firstNameCtrl = TextEditingController();
+  final _secondNameCtrl = TextEditingController();
+  final _anniversaryDateCtrl = TextEditingController();
+
+  DateTime? _selectedDate;
+
+  Future<void> _presentDatePicker() async {
+    final now = DateTime.now();
+    final firstDate = DateTime(1990, 1, 1);
+
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate ?? now,
+      firstDate: firstDate,
+      lastDate: now,
+    );
+
+    if (pickedDate == null) return;
+
+    setState(() {
+      _selectedDate = pickedDate;
+      _anniversaryDateCtrl.text = DateFormat('yyyy.MM.dd').format(pickedDate);
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _firstNameCtrl.dispose();
+    _secondNameCtrl.dispose();
+    _anniversaryDateCtrl.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +146,7 @@ class CompleteCoupleScreen extends StatelessWidget {
                               child: Column(
                                 children: [
                                   Text(
-                                    '💕첫번째 (핑크)',
+                                    '💕나',
                                     style: TextStyle(
                                       fontSize: 13,
                                       color: decoTheme.textSecondary,
@@ -122,6 +165,7 @@ class CompleteCoupleScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(14),
                                     ),
                                     child: TextField(
+                                      controller: _firstNameCtrl,
                                       decoration: InputDecoration(
                                         filled: true,
                                         fillColor: Colors.transparent,
@@ -132,7 +176,7 @@ class CompleteCoupleScreen extends StatelessWidget {
                                   Image.asset('assets/images/heart.png'),
                                   SizedBox(height: 4),
                                   Text(
-                                    '💜 두번째 (퍼플)',
+                                    '💜 짝꿍',
                                     style: TextStyle(
                                       fontSize: 13,
                                       color: decoTheme.textSecondary,
@@ -151,6 +195,7 @@ class CompleteCoupleScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(14),
                                     ),
                                     child: TextField(
+                                      controller: _secondNameCtrl,
                                       decoration: InputDecoration(
                                         filled: true,
                                         fillColor: Colors.transparent,
@@ -177,9 +222,21 @@ class CompleteCoupleScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(14),
                                     ),
                                     child: TextField(
+                                      controller: _anniversaryDateCtrl,
+                                      onTap: _presentDatePicker,
                                       decoration: InputDecoration(
                                         filled: true,
                                         fillColor: Colors.transparent,
+                                        hintText: '날짜를 선택해 주세요',
+                                        suffixIcon: const Icon(
+                                          Icons.calendar_month,
+                                        ),
+                                        border: InputBorder.none,
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                              horizontal: 16,
+                                              vertical: 14,
+                                            ),
                                       ),
                                     ),
                                   ),
@@ -195,8 +252,21 @@ class CompleteCoupleScreen extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: OutlinedButton(
-                          onPressed: () {
-                            context.go('/home');
+                          onPressed: () async {
+                            Couple? couple = await _coupleService
+                                .readMyCoupleByInvitee();
+                            if (couple != null) {
+                              final updated = couple.copyWith(
+                                anniversaryDate: _selectedDate,
+                              );
+                              await _coupleService.updateMyCouple(updated);
+                              await _auth.updateCoupleNickname(
+                                couple,
+                                _firstNameCtrl.text,
+                                _secondNameCtrl.text,
+                              );
+                              context.go('/home');
+                            }
                           },
                           style: OutlinedButton.styleFrom(
                             side: const BorderSide(color: AppColors.surface),
