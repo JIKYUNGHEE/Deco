@@ -4,6 +4,8 @@ import 'package:deco/ui/connect/complete_couple_screen.dart';
 import 'package:deco/ui/connect/couple_connect_screen.dart';
 import 'package:deco/ui/connect/create_couple_room_screen.dart';
 import 'package:deco/ui/core/ui/frame_page.dart';
+import 'package:deco/ui/course/create/create_course_screen.dart';
+import 'package:deco/ui/course/create/create_place_screen.dart';
 import 'package:deco/ui/debug/theme_preview_page.dart';
 import 'package:deco/ui/connect/enter_invitation_code_screen.dart';
 import 'package:deco/ui/home/home_screen.dart';
@@ -86,6 +88,8 @@ GoRouter createRouter(AppState appState) {
       GoRoute(path: '/create-room', builder: (context, state) => CreateCoupleRoomScreen()),
       GoRoute(path: '/enter-code', builder: (context, state) => EnterInvitationCodeScreen()),
       GoRoute(path: '/connect-complete', builder: (context, state) => CompleteCoupleScreen()),
+      GoRoute(path: '/create-course', builder: (context, state) => CreateCourseScreen()),
+      GoRoute(path: '/create-place', parentNavigatorKey: _rootNavigatorKey, builder: (context, state) => CreatePlaceScreen()),
       StatefulShellRoute.indexedStack(
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state, navigationShell) {
