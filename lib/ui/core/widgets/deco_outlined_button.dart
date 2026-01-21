@@ -23,6 +23,8 @@ class DecoOutlinedButton extends StatelessWidget {
   final Color? backgroundColor;
   final Color? borderColor;
   final Color? pressedBorderColor;
+  
+  final EdgeInsetsGeometry padding;
 
   const  DecoOutlinedButton({
     super.key,
@@ -39,6 +41,7 @@ class DecoOutlinedButton extends StatelessWidget {
     this.backgroundColor,
     this.borderColor,
     this.pressedBorderColor,
+    this.padding = const EdgeInsets.symmetric(horizontal: 14),
   });
 
   bool get _enabled => onPressed != null && !isLoading;
@@ -91,6 +94,7 @@ class DecoOutlinedButton extends StatelessWidget {
         child: OutlinedButton(
           onPressed: _enabled ? onPressed : null,
           style: ButtonStyle(
+            padding: WidgetStatePropertyAll(padding),
             backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
               if (states.contains(WidgetState.disabled)) return Colors.white;
               return backgroundColor ?? Colors.white;
