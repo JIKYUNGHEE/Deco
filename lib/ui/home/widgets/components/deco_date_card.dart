@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../../domain/models/course.dart';
+
 class DecoDateCard extends StatelessWidget {
-  final double rating;
-  final String dateText;
-  final String title;
-  final String routeText;
-  final String? imageUrl;
+  final Course data;
 
   final List<Color> coverGradient;
 
@@ -13,11 +11,7 @@ class DecoDateCard extends StatelessWidget {
 
   const DecoDateCard({
     super.key,
-    this.rating = 5.0,
-    this.dateText = '2025.04.05',
-    this.title = '주말 한강 피크닉',
-    this.routeText = '선셋 → 치킨 → 야경',
-    this.imageUrl,
+    required this.data,
     this.coverGradient = const [Color(0xFFEAEAEA), Color(0xFFBDBDBD)],
     this.onTapThumbnail,
   });
@@ -26,6 +20,11 @@ class DecoDateCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final r = BorderRadius.circular(26);
     final t = Theme.of(context).textTheme;
+    final placesName = data.places
+        ?.map((place) => place.name)
+        .whereType<String>()
+        .join(' → ')
+        ?? '';
 
     return Container(
       decoration: BoxDecoration(
@@ -55,7 +54,7 @@ class DecoDateCard extends StatelessWidget {
                 children: [
                   Positioned.fill(
                     child: _CoverImage(
-                      imageUrl: imageUrl,
+                      imageUrl: data.picture,
                       fallbackGradient: coverGradient,
                     ),
                   ),
@@ -81,28 +80,28 @@ class DecoDateCard extends StatelessWidget {
                     ),
                   ),
 
-                  Positioned(
-                    left: 16,
-                    top: 16,
-                    child: _Pill(
-                      background: const Color(0xFFFFC84A),
-                      shadow: true,
-                      child: Row(
-                        children: [
-                          const Icon(Icons.star_rounded,
-                              size: 18, color: Colors.white),
-                          const SizedBox(width: 6),
-                          Text(
-                            rating.toStringAsFixed(1),
-                            style: t.labelLarge?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  // Positioned(
+                  //   left: 16,
+                  //   top: 16,
+                  //   child: _Pill(
+                  //     background: const Color(0xFFFFC84A),
+                  //     shadow: true,
+                  //     child: Row(
+                  //       children: [
+                  //         const Icon(Icons.star_rounded,
+                  //             size: 18, color: Colors.white),
+                  //         const SizedBox(width: 6),
+                  //         Text(
+                  //           rating.toStringAsFixed(1),
+                  //           style: t.labelLarge?.copyWith(
+                  //             color: Colors.white,
+                  //             fontWeight: FontWeight.w900,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
 
                   Positioned(
                     left: 16,
@@ -118,7 +117,7 @@ class DecoDateCard extends StatelessWidget {
                                   .withValues(alpha: 0.95)),
                           const SizedBox(width: 8),
                           Text(
-                            dateText,
+                            '${data.date?.year}.${data.date?.month}.${data.date?.day}',
                             style: t.labelLarge?.copyWith(
                               color: const Color(0xFF111827),
                               fontWeight: FontWeight.w900,
@@ -138,7 +137,7 @@ class DecoDateCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    '${data.title}',
                     style: t.titleLarge?.copyWith(
                       fontWeight: FontWeight.w900,
                       color: const Color(0xFF111827),
@@ -159,7 +158,7 @@ class DecoDateCard extends StatelessWidget {
                       const SizedBox(width: 6),
                       Expanded(
                         child: Text(
-                          routeText,
+                          placesName,
                           style: t.titleMedium?.copyWith(
                             fontWeight: FontWeight.w700,
                             color: const Color(0xFF6B7280),

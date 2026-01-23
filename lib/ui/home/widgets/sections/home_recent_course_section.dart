@@ -36,7 +36,7 @@ class HomeRecentCourseSection extends StatelessWidget {
                 color: AppColors.primary,
               ),
               title: '최근 데이트 코스',
-              trailing: _AllButton(onTap: () {}),
+              trailing: _AllButton(onTap: onTapAll),
             ),
           ),
           const SizedBox(height: 14),

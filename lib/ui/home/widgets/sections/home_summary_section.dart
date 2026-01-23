@@ -2,6 +2,7 @@ import 'package:deco/ui/core/themes/deco_theme_extension.dart';
 import 'package:deco/ui/home/widgets/components/wobble_icon_tile.dart';
 import 'package:deco/ui/home/widgets/components/summary_stat_card.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../components/quick_action_card.dart';
 
@@ -147,7 +148,10 @@ class _HomeSummarySectionState extends State<HomeSummarySection> {
                       title: '새 코스\n만들기',
                       iconGradient: [Color(0xFFFF2FA0), Color(0xFFFF76C8)],
                       selected: _selectedIndex == 0,
-                      onTap: () => setState(() => _selectedIndex = 0),
+                      onTap: () => {
+                        setState(() => _selectedIndex = 0),
+                        context.go('/create-course'),
+                      },
                     ),
                   ),
                   SizedBox(width: 14),
@@ -157,7 +161,10 @@ class _HomeSummarySectionState extends State<HomeSummarySection> {
                       title: '달력\n보기',
                       iconGradient: [Color(0xFF6D33FF), Color(0xFFB69CFF)],
                       selected: _selectedIndex == 1,
-                      onTap: () => setState(() => _selectedIndex = 1),
+                      onTap: () => {
+                        setState(() => _selectedIndex = 1),
+                        context.go('/calendar')
+                      },
                     ),
                   ),
                   SizedBox(width: 14),
