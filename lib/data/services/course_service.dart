@@ -1,4 +1,7 @@
+import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui';
+import 'package:path/path.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -32,7 +35,10 @@ class CourseService {
     docCourseRef.update({'coupleId': coupleId});
 
     //2. course 대표 이미지를 저장한다.
-    // uploadCourseImage(bytes: bytes, path: path, courseId: courseId);
+    if(course.picture != null) {
+      String downloadUrl = await uploadImage(path: course.picture!, courseId: courseId);
+      docCourseRef.update({'picture': downloadUrl});
+    }
 
     if (course.places != null) {
       final places = course.places ?? [];
@@ -41,31 +47,47 @@ class CourseService {
       for (var place in places) {
         //3. place 만든다.
         final docPlaceRef = await placeCollection.add(place.toMap());
-        docPlaceRef.update({'id': docPlaceRef.id});
+        String placeId = docPlaceRef.id;
+        docPlaceRef.update({'id': placeId});
         docPlaceRef.update({'courseId': courseId});
 
-        //4. place 이미지를 저장한다.
-        // uploadCourseImage(bytes: bytes, path: path, courseId: courseId);
+        if(place.pictures != null && place.pictures!.isNotEmpty) {
+          List<String?> pictures = place.pictures!;
+          List<String?> downloadUrls = [];
+          for (var path in pictures) {
+            //4. place 이미지를 저장한다.
+            if(path != null) {
+             String downloadUrl = await uploadImage(path: path, courseId: courseId, placeId: placeId);
+             downloadUrls.add(downloadUrl);
+            }
+          }
+          docPlaceRef.update({'pictures': downloadUrls});
+        }
       }
     }
+    //TODO. success, error 처리 https://firebase.google.com/docs/firestore/manage-data/add-data?hl=ko
   }
 
   Future<String> uploadImage({
-    required Uint8List bytes,
     required String path,
     String? courseId,
     String? placeId,
   }) async {
     if (courseId == null) throw Exception('잘못된 접근입니다.');
     try {
+      File file = File(path);
+      String fileName = basename(path);
+
       final courseRef = storageRef.child(
-        'course_image/${courseId}_${placeId}_image.png',
+        'course_image/${courseId}_${placeId}_$fileName',
       );
+
       final metadata = SettableMetadata(
-        contentType: 'image/png',
+        contentType: 'image/jpg',
         customMetadata: {'picked-file-path': path},
       );
-      await courseRef.putData(bytes, metadata);
+
+      await courseRef.putFile(file, metadata);
       final downloadUrl = await courseRef.getDownloadURL();
       return downloadUrl;
     } catch (e) {

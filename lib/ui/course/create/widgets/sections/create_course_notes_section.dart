@@ -70,6 +70,7 @@ class CreateCourseNotesSection extends StatelessWidget {
               hintText: '전체 코스에 대한 메모를 남겨보세요.',
               hintStyle: TextStyle(color: Colors.black.withValues(alpha: 0.35)),
             ),
+            controller: memoController,
           ),
         ),
 
