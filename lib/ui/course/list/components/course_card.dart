@@ -1,19 +1,31 @@
 import 'package:flutter/material.dart';
 
+import '../../../../domain/models/course.dart';
+
 class CourseCard extends StatelessWidget {
-  final CourseCardData data;
+  final Course data;
   final VoidCallback? onTap;
 
-  const CourseCard({
-    super.key,
-    required this.data,
-    this.onTap,
-  });
+  const CourseCard({super.key, required this.data, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final r = BorderRadius.circular(22);
     final t = Theme.of(context).textTheme;
+    final placesName = data.places
+        ?.map((place) => place.name)
+        .whereType<String>()
+        .join(' → ')
+        ?? '';
+
+    int totalPicturesCount = 0;
+
+    final places = data.places;
+    if (places != null) {
+      for (final place in places) {
+        totalPicturesCount += place.pictures?.length ?? 0;
+      }
+    }
 
     return Material(
       color: Colors.transparent,
@@ -47,12 +59,20 @@ class CourseCard extends StatelessWidget {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      Container(
-                        color: Colors.black.withValues(alpha: 0.10),
-                        child: const Center(
-                          child: Icon(Icons.image_outlined, size: 34),
+                      if (data.picture != null)
+                        Positioned.fill(
+                          child: Image.network(
+                            data.picture!,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
+                      if (data.picture == null)
+                        Container(
+                          color: Colors.black.withValues(alpha: 0.10),
+                          child: const Center(
+                            child: Icon(Icons.image_outlined, size: 34),
+                          ),
+                        ),
 
                       IgnorePointer(
                         child: DecoratedBox(
@@ -74,7 +94,7 @@ class CourseCard extends StatelessWidget {
                         top: 10,
                         child: _Pill(
                           icon: Icons.photo_library_outlined,
-                          text: '${data.photos}',
+                          text: '$totalPicturesCount',
                         ),
                       ),
                     ],
@@ -87,7 +107,7 @@ class CourseCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        data.title,
+                        data.title!,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: t.titleMedium?.copyWith(
@@ -99,7 +119,7 @@ class CourseCard extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            data.dateText,
+                            '${data.date?.year}.${data.date?.month}.${data.date?.day}',
                             style: t.labelMedium?.copyWith(
                               color: Colors.black.withValues(alpha: 0.55),
                               fontWeight: FontWeight.w700,
@@ -108,7 +128,7 @@ class CourseCard extends StatelessWidget {
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              data.routeText,
+                              placesName,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: t.labelMedium?.copyWith(
@@ -127,12 +147,13 @@ class CourseCard extends StatelessWidget {
                           Icon(
                             Icons.favorite,
                             size: 16,
-                            color: const Color(0xFFFF4FA3)
-                                .withValues(alpha: 0.95),
+                            color: const Color(
+                              0xFFFF4FA3,
+                            ).withValues(alpha: 0.95),
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            '${data.likes}',
+                            '${data.favorites?.length ?? 0}',
                             style: t.labelMedium?.copyWith(
                               color: Colors.black.withValues(alpha: 0.55),
                               fontWeight: FontWeight.w800,

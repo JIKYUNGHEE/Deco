@@ -64,6 +64,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
     );
 
     _courseService.createCourse(course);
+    context.go('/course');  //TODO. 수정 -> 홈에서도 create 갈 수 있음.
   }
 
   Future<void> pickCover() async {

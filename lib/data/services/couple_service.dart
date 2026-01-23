@@ -53,6 +53,20 @@ class CoupleService {
     return Couple.fromMap(doc.data());
   }
 
+  Future<String?> findMyCoupleId(String uid) async {
+    Couple? couple1 = await readMyCoupleByInvitor();
+    Couple? couple2 = await readMyCoupleByInvitee();
+    String? coupleId;
+    if (couple1 != null && couple1.invitor == uid) {
+      coupleId = couple1.id;
+    }
+    if (couple2 != null && couple2.invitee == uid) {
+      coupleId = couple2.id;
+    }
+
+    return coupleId;
+  }
+
 
   Future<Couple?> readMyCoupleByCode(String code) async {
     final couplesCollection = _fs.collection('couples');

@@ -7,7 +7,7 @@ class Course {
   final String? id;
   final String? title;
   final DateTime? date;
-  final List<Place>? places;
+  List<Place>? places;
   final String? daySentence;
   final String? memo;
   final String? picture;
@@ -16,7 +16,7 @@ class Course {
   final bool? isPublic;
   final List<String>? favorites;
 
-  const Course({
+  Course({
     this.id,
     this.title,
     this.date,

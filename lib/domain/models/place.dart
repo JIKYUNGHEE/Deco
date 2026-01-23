@@ -80,6 +80,14 @@ class Place {
   }
 
   factory Place.fromMap(Map<String, dynamic> map) {
+    final rawPictures = map['pictures'];
+
+    final pictures = (rawPictures is List)
+        ? rawPictures
+        .whereType<String>()
+        .toList()
+        : <String>[];
+
     return Place(
       id: map['id'],
       name: map['name'],
@@ -87,7 +95,7 @@ class Place {
       address: map['address'],
       lan: map['lan'],
       lon: map['lon'],
-      pictures: map['pictures'],
+      pictures: pictures,
       memo: map['memo'],
       courseId: map['courseId'],
     );

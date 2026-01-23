@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:deco/domain/models/place.dart';
 import 'package:path/path.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,10 +21,10 @@ class CourseService {
     Couple? couple1 = await _coupleService.readMyCoupleByInvitor();
     Couple? couple2 = await _coupleService.readMyCoupleByInvitee();
     String? coupleId;
-    if(couple1 != null && couple1.invitor == course.writer) {
+    if (couple1 != null && couple1.invitor == course.writer) {
       coupleId = couple1.id;
     }
-    if(couple2 != null && couple2.invitee == course.writer) {
+    if (couple2 != null && couple2.invitee == course.writer) {
       coupleId = couple2.id;
     }
 
@@ -35,8 +36,11 @@ class CourseService {
     docCourseRef.update({'coupleId': coupleId});
 
     //2. course 대표 이미지를 저장한다.
-    if(course.picture != null) {
-      String downloadUrl = await uploadImage(path: course.picture!, courseId: courseId);
+    if (course.picture != null) {
+      String downloadUrl = await uploadImage(
+        path: course.picture!,
+        courseId: courseId,
+      );
       docCourseRef.update({'picture': downloadUrl});
     }
 
@@ -51,20 +55,25 @@ class CourseService {
         docPlaceRef.update({'id': placeId});
         docPlaceRef.update({'courseId': courseId});
 
-        if(place.pictures != null && place.pictures!.isNotEmpty) {
+        if (place.pictures != null && place.pictures!.isNotEmpty) {
           List<String?> pictures = place.pictures!;
           List<String?> downloadUrls = [];
           for (var path in pictures) {
             //4. place 이미지를 저장한다.
-            if(path != null) {
-             String downloadUrl = await uploadImage(path: path, courseId: courseId, placeId: placeId);
-             downloadUrls.add(downloadUrl);
+            if (path != null) {
+              String downloadUrl = await uploadImage(
+                path: path,
+                courseId: courseId,
+                placeId: placeId,
+              );
+              downloadUrls.add(downloadUrl);
             }
           }
           docPlaceRef.update({'pictures': downloadUrls});
         }
       }
     }
+
     //TODO. success, error 처리 https://firebase.google.com/docs/firestore/manage-data/add-data?hl=ko
   }
 
@@ -78,6 +87,7 @@ class CourseService {
       File file = File(path);
       String fileName = basename(path);
 
+      //TODO. placeId == null일 경우, 대표 이미지라고 생각???
       final courseRef = storageRef.child(
         'course_image/${courseId}_${placeId}_$fileName',
       );
@@ -93,5 +103,82 @@ class CourseService {
     } catch (e) {
       throw Exception('upload 실패: $e');
     }
+  }
+
+
+  Future<List<Course>?> readCoursesByCoupleId(String coupleId) async {
+    final courseCollection = _fs.collection('course');
+    final QuerySnapshot<Map<String, dynamic>> querySnapshot1 =
+    await courseCollection.where('coupleId', isEqualTo: coupleId).get();
+
+    if (querySnapshot1.docs.isEmpty) return null;
+
+    final queryDocumentSnapshot1 = querySnapshot1.docs;
+    List<Course> returnCourseData = [];
+    for (final QueryDocumentSnapshot<Map<String, dynamic>> doc
+    in queryDocumentSnapshot1) {
+      Course course = Course.fromMap(doc.data());
+      String courseId = course.id!;
+
+      final placeCollection = _fs.collection('place');
+      final QuerySnapshot<Map<String, dynamic>> querySnapshot2 =
+      await placeCollection.where('courseId', isEqualTo: courseId).get();
+
+      if (querySnapshot2.docs.isEmpty) {
+        returnCourseData.add(course);
+        break;
+      }
+
+      final queryDocumentSnapshot2 = querySnapshot2.docs;
+
+      List<Place> placeData = [];
+      for (final QueryDocumentSnapshot<Map<String, dynamic>> doc2
+      in queryDocumentSnapshot2) {
+        placeData.add(Place.fromMap(doc2.data()));
+      }
+
+      course.places = placeData;
+      returnCourseData.add(course);
+    }
+
+    return returnCourseData;
+  }
+
+  Future<List<Course>?> readPublicCourses() async {
+    final courseCollection = _fs.collection('course');
+    final QuerySnapshot<Map<String, dynamic>> querySnapshot1 =
+        await courseCollection.where('isPublic', isEqualTo: true).get();
+
+    if (querySnapshot1.docs.isEmpty) return null;
+
+    final queryDocumentSnapshot1 = querySnapshot1.docs;
+    List<Course> returnCourseData = [];
+    for (final QueryDocumentSnapshot<Map<String, dynamic>> doc
+        in queryDocumentSnapshot1) {
+      Course course = Course.fromMap(doc.data());
+      String courseId = course.id!;
+
+      final placeCollection = _fs.collection('place');
+      final QuerySnapshot<Map<String, dynamic>> querySnapshot2 =
+          await placeCollection.where('courseId', isEqualTo: courseId).get();
+
+      if (querySnapshot2.docs.isEmpty) {
+        returnCourseData.add(course);
+        break;
+      }
+
+      final queryDocumentSnapshot2 = querySnapshot2.docs;
+
+      List<Place> placeData = [];
+      for (final QueryDocumentSnapshot<Map<String, dynamic>> doc2
+          in queryDocumentSnapshot2) {
+        placeData.add(Place.fromMap(doc2.data()));
+      }
+
+      course.places = placeData;
+      returnCourseData.add(course);
+    }
+
+    return returnCourseData;
   }
 }
