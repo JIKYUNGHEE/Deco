@@ -1,12 +1,25 @@
 import 'package:flutter/material.dart';
 
-class MypageScreen extends StatelessWidget {
-  const MypageScreen({super.key});
+import 'widgets/mypage_settings_section.dart';
+import 'widgets/mypage_summary_section.dart';
+
+class MyPageScreen extends StatelessWidget {
+  const MyPageScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: Text('마이페이지')),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              MyPageSummarySection(),
+              SizedBox(height: 16),
+              MyPageSettingsSection(),
+              SizedBox(height: 24)
+            ],
+          ),
+      ),
     );
   }
 }
