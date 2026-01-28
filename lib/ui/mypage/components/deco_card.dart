@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class Card extends StatelessWidget {
+class DecoCard extends StatelessWidget {
   final Widget child;
-  const Card({required this.child});
+  const DecoCard({required this.child});
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,4 @@
+import 'package:deco/ui/core/widgets/deco_card.dart';
 import 'package:flutter/material.dart';
 
 import '../components/character_preview.dart';
@@ -16,7 +17,7 @@ class ProfileCharacterSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return DecoCard(
       child: Column(
         children: [
           const SizedBox(height: 14),

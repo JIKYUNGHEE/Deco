@@ -10,6 +10,7 @@ import 'package:deco/ui/debug/theme_preview_page.dart';
 import 'package:deco/ui/connect/enter_invitation_code_screen.dart';
 import 'package:deco/ui/home/home_screen.dart';
 import 'package:deco/ui/login/login_screen.dart';
+import 'package:deco/ui/mypage/couple_edit_screen.dart';
 import 'package:deco/ui/mypage/mypage_screen.dart';
 import 'package:deco/ui/onboarding/onboarding_screen.dart';
 import 'package:deco/ui/terms/terms_agree_screen.dart';
@@ -92,6 +93,7 @@ GoRouter createRouter(AppState appState) {
       GoRoute(path: '/create-course', builder: (context, state) => CreateCourseScreen()),
       GoRoute(path: '/create-place', parentNavigatorKey: _rootNavigatorKey, builder: (context, state) => CreatePlaceScreen()),
       GoRoute(path: '/profile/edit', parentNavigatorKey: _rootNavigatorKey, builder: (context, state) => ProfileEditScreen()),
+      GoRoute(path: '/couple/edit', parentNavigatorKey: _rootNavigatorKey, builder: (context, state) => CoupleEditScreen()),
       StatefulShellRoute.indexedStack(
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state, navigationShell) {
