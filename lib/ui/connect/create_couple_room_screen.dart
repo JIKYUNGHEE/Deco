@@ -1,3 +1,4 @@
+import 'package:deco/data/services/couple_service.dart';
 import 'package:deco/ui/core/themes/app_colors.dart';
 import 'package:deco/ui/core/widgets/deco_outlined_button.dart';
 import 'package:deco/ui/core/widgets/deco_primary_button.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../domain/models/couple.dart';
 import '../core/themes/deco_theme_extension.dart';
 
 class CreateCoupleRoomScreen extends StatefulWidget {
@@ -15,6 +17,24 @@ class CreateCoupleRoomScreen extends StatefulWidget {
 }
 
 class _CreateCoupleRoomScreenState extends State<CreateCoupleRoomScreen> {
+  final _coupleService = CoupleService();
+  String? code;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCode();
+  }
+
+  Future<void> _loadCode() async {
+    final couple = await _coupleService.readMyCoupleByInvitor();
+    if (!mounted) return;
+
+    setState(() {
+      code = couple?.code;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final decoTheme = Theme.of(context).extension<DecoThemeExtension>()!;
@@ -110,7 +130,7 @@ class _CreateCoupleRoomScreenState extends State<CreateCoupleRoomScreen> {
                               ),
                             ),
                             child: Text(
-                              'D E C O 2',
+                              code ?? '-----',
                               style: TextStyle(fontSize: 28),
                             ),
                           ),

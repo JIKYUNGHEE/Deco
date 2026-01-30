@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:deco/domain/models/place.dart';
 import 'package:deco/ui/course/create/widgets/sections/create_course_places_section.dart';
 import 'package:deco/ui/course/create/widgets/sections/create_place_actions_section.dart';
 import 'package:deco/ui/course/create/widgets/sections/create_place_memo_section.dart';
@@ -29,6 +30,7 @@ class _CreatePlaceScreenState extends State<CreatePlaceScreen> {
   final _picker = ImagePicker();
 
   final List<ImageProvider?> _photos = List.generate(3, (_) => null);
+  final List<String?> _photosPath = List.generate(3, (_) => null);
 
   Future<void> _pickPhotoAt(int index) async{
     try {
@@ -38,6 +40,7 @@ class _CreatePlaceScreenState extends State<CreatePlaceScreen> {
 
       setState(() {
         _photos[index] = FileImage(File(xFile.path));
+        _photosPath[index] = xFile.path;
       });
     }catch(e) {
       debugPrint('pickPhotoAt error: $e');
@@ -57,10 +60,12 @@ class _CreatePlaceScreenState extends State<CreatePlaceScreen> {
   }
 
   void _save() {
-    final result = SelectedPlaceUi(
-      title: _nameCtrl.text.trim(),
-      tag: _selectedType!.name,
-      location: _locationLabel!,
+    final result = Place(
+      name: _nameCtrl.text.trim(),
+      type: _selectedType!.name,
+      address: _locationLabel!,
+      memo: _memoCtrl.text.trim(),
+      pictures: _photosPath,
     );
     context.pop(result);
   }

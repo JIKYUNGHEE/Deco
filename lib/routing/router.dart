@@ -117,7 +117,7 @@ GoRouter createRouter(AppState appState) {
               GoRoute(
                 path: '/course',
                 builder: (context, state) {
-                  return CourseScreen();
+                  return CourseScreen(initialTab: state.uri.queryParameters['tab'],);
                 },
               ),
             ],

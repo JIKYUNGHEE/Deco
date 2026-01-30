@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'package:deco/data/services/course_service.dart';
+import 'package:deco/domain/models/course.dart';
+import 'package:deco/domain/models/place.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,7 +11,6 @@ import 'package:image_picker/image_picker.dart';
 import 'widgets/sections/create_course_actions_section.dart';
 import 'widgets/sections/create_course_basic_info_section.dart';
 import 'widgets/sections/create_course_cover_photo_section.dart';
-import 'widgets/sections/create_course_intro_section.dart';
 import 'widgets/sections/create_course_notes_section.dart';
 import 'widgets/sections/create_course_places_section.dart';
 
@@ -19,15 +22,20 @@ class CreateCourseScreen extends StatefulWidget {
 }
 
 class _CreateCourseScreenState extends State<CreateCourseScreen> {
-  final List<SelectedPlaceUi> _places = [];
+  final _courseService = CourseService();
+
+  final List<Place> _places = [];
   File? _coverFile;
+  String? _filePath;
   bool _isPublic = false;
 
+  final _titleController = TextEditingController();
+  final _dateController = TextEditingController();
   final _oneLineController = TextEditingController();
   final _memoController = TextEditingController();
 
   Future<void> _openCreatePlace() async {
-    final result = await context.push<SelectedPlaceUi>('/create-place');
+    final result = await context.push<Place>('/create-place');
 
     if(result == null) return;
 
@@ -43,6 +51,20 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
   }
 
   void _save() {
+    List<int> date = _dateController.text.trim().split(".").map(int.parse).toList();
+    Course course = Course(
+      title: _titleController.text.trim(),
+      date: DateTime(date[0], date[1], date[2]),
+      places: _places,
+      daySentence: _oneLineController.text.trim(),
+      memo: _memoController.text.trim(),
+      picture: _filePath,
+      writer: FirebaseAuth.instance.currentUser?.uid,
+      isPublic: _isPublic,
+    );
+
+    _courseService.createCourse(course);
+    context.go('/course');  //TODO. 수정 -> 홈에서도 create 갈 수 있음.
   }
 
   Future<void> pickCover() async {
@@ -59,6 +81,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
 
       setState(() {
         _coverFile = File(picked.path);
+        _filePath = picked.path;
       });
     } catch (e) {
       debugPrint('pickCover error: $e');
@@ -71,6 +94,8 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
 
   @override
   void dispose() {
+    _titleController.dispose();
+    _dateController.dispose();
     _oneLineController.dispose();
     _memoController.dispose();
     super.dispose();
@@ -97,7 +122,10 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                     ),
                     const SizedBox(height: 14),
 
-                    const CreateCourseBasicInfoSection(),
+                    CreateCourseBasicInfoSection(
+                      titleController: _titleController,
+                      dateController: _dateController,
+                    ),
                     const SizedBox(height: 14),
 
                     CreateCoursePlacesSection(

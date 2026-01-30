@@ -1,3 +1,5 @@
+import 'package:deco/data/services/couple_service.dart';
+import 'package:deco/domain/models/couple.dart';
 import 'package:deco/ui/core/widgets/deco_outlined_button.dart';
 import 'package:deco/ui/core/widgets/deco_primary_button.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,8 @@ class EnterInvitationCodeScreen extends StatefulWidget {
 }
 
 class _EnterInvitationCodeScreenState extends State<EnterInvitationCodeScreen> {
+  final _coupleService = CoupleService();
+
   final _formKey = GlobalKey<FormState>();
   List<String?> checkCodeList = List.filled(5, null);
   bool checkAllCodeFilled = false;
@@ -111,7 +115,7 @@ class _EnterInvitationCodeScreenState extends State<EnterInvitationCodeScreen> {
                               ),
                             )
                           : DecoPrimaryButton(label: '연결하기', onPressed: () {
-                            context.go('/connect-complete');
+                            checkCoupleCode(context);
                       }, radius: 60, height: 58,),
                     ),
                   ],
@@ -179,6 +183,20 @@ class _EnterInvitationCodeScreenState extends State<EnterInvitationCodeScreen> {
         ),
       ),
     );
+  }
+
+  void checkCoupleCode(BuildContext context) async {
+    String code = checkCodeList.join();
+    Couple? couple = await _coupleService.readMyCoupleByCode(code);
+    if(couple != null && code == couple.code) {
+        context.go('/connect-complete');
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('코드가 맞지 않습니다.')));
+      }
+    }
   }
 }
 

@@ -2,11 +2,25 @@ import 'package:deco/ui/core/themes/deco_theme_extension.dart';
 import 'package:deco/ui/home/widgets/components/wobble_icon_tile.dart';
 import 'package:deco/ui/home/widgets/components/summary_stat_card.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../components/quick_action_card.dart';
 
 class HomeSummarySection extends StatefulWidget {
-  const HomeSummarySection({super.key});
+  final String invitor;
+  final String invitee;
+  final int daysTogether;
+  final int totalCourses;
+  final int monthDates;
+
+  const HomeSummarySection({
+    super.key,
+    required this.invitor,
+    required this.invitee,
+    required this.daysTogether,
+    required this.totalCourses,
+    required this.monthDates,
+  });
 
   @override
   State<HomeSummarySection> createState() => _HomeSummarySectionState();
@@ -63,7 +77,7 @@ class _HomeSummarySectionState extends State<HomeSummarySection> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                '지민 & 수현',
+                                '${widget.invitor} & ${widget.invitee}',
                                 style: Theme.of(context).textTheme.titleMedium
                                     ?.copyWith(
                                       color: Colors.white,
@@ -100,28 +114,28 @@ class _HomeSummarySectionState extends State<HomeSummarySection> {
                     SizedBox(
                       height: 124,
                       child: Row(
-                        children: const [
+                        children: [
                           Expanded(
                             child: SummaryStatCard(
                               emoji: '💕',
                               title: '함께한 날',
-                              value: 'D+365',
+                              value: 'D+${widget.daysTogether}',
                             ),
                           ),
-                          SizedBox(width: 12),
+                          const SizedBox(width: 12),
                           Expanded(
                             child: SummaryStatCard(
                               emoji: '📍',
                               title: '총 코스',
-                              value: '24개',
+                              value: '${widget.totalCourses}개',
                             ),
                           ),
-                          SizedBox(width: 12),
+                          const SizedBox(width: 12),
                           Expanded(
                             child: SummaryStatCard(
                               emoji: '⭐',
                               title: '이달의 데이트',
-                              value: '6회',
+                              value: '${widget.monthDates}회',
                             ),
                           ),
                         ],
@@ -147,7 +161,10 @@ class _HomeSummarySectionState extends State<HomeSummarySection> {
                       title: '새 코스\n만들기',
                       iconGradient: [Color(0xFFFF2FA0), Color(0xFFFF76C8)],
                       selected: _selectedIndex == 0,
-                      onTap: () => setState(() => _selectedIndex = 0),
+                      onTap: () => {
+                        setState(() => _selectedIndex = 0),
+                        context.go('/create-course'),
+                      },
                     ),
                   ),
                   SizedBox(width: 14),
@@ -157,7 +174,10 @@ class _HomeSummarySectionState extends State<HomeSummarySection> {
                       title: '달력\n보기',
                       iconGradient: [Color(0xFF6D33FF), Color(0xFFB69CFF)],
                       selected: _selectedIndex == 1,
-                      onTap: () => setState(() => _selectedIndex = 1),
+                      onTap: () => {
+                        setState(() => _selectedIndex = 1),
+                        context.go('/calendar'),
+                      },
                     ),
                   ),
                   SizedBox(width: 14),
@@ -167,7 +187,10 @@ class _HomeSummarySectionState extends State<HomeSummarySection> {
                       title: '공개\n코스',
                       iconGradient: [Color(0xFFC7A6FF), Color(0xFFE8DAFF)],
                       selected: _selectedIndex == 2,
-                      onTap: () => setState(() => _selectedIndex = 2),
+                      onTap: () => {
+                        setState(() => _selectedIndex = 2),
+                        context.go('/course?tab=public'),
+                      },
                     ),
                   ),
                 ],
