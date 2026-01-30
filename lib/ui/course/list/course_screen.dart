@@ -4,6 +4,7 @@ import 'package:deco/ui/core/themes/deco_theme_extension.dart';
 import 'package:deco/ui/core/widgets/deco_gradient_app_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../domain/models/course.dart';
 import 'widgets/sections/course_cta_section.dart';
@@ -12,13 +13,17 @@ import 'widgets/sections/course_list_section.dart';
 import 'widgets/sections/course_tab_section.dart';
 
 class CourseScreen extends StatefulWidget {
-  const CourseScreen({super.key});
+  final String? initialTab;
+
+  const CourseScreen({super.key, this.initialTab});
 
   @override
   State<CourseScreen> createState() => _CourseScreenState();
 }
 
 class _CourseScreenState extends State<CourseScreen> {
+  CourseTab _currentTab = CourseTab.my;
+
   final CoupleService _coupleService = CoupleService();
   final CourseService _courseService = CourseService();
   List<Course>? _courseList = [];
@@ -30,7 +35,13 @@ class _CourseScreenState extends State<CourseScreen> {
   @override
   void initState() {
     super.initState();
-    fetchData();
+    if(widget.initialTab == 'public') {
+      _currentTab = CourseTab.public;
+      fetchPublicData();
+    } else {
+      _currentTab = CourseTab.my;
+      fetchData();
+    }
   }
 
   Future<void> fetchData() async {
@@ -61,12 +72,17 @@ class _CourseScreenState extends State<CourseScreen> {
           child: ListView(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
             children: [
-              CourseTabSection(current: CourseTab.my, onChanged: (tab) {
-                if(tab.name == CourseTab.my.name) {
-                  fetchData();
-                } else {
-                  fetchPublicData();
-                }
+              CourseTabSection(current: _currentTab, onChanged: (tab) {
+                setState(() {
+                  _currentTab = tab;
+                  if(tab == CourseTab.my) {
+                    fetchData();
+                    context.go('/course?tab=my');
+                  } else {
+                    fetchPublicData();
+                    context.go('/course?tab=public');
+                  }
+                });
               }),
               SizedBox(height: 8,),
               CourseFilterSection(

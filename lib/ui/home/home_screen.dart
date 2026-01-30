@@ -13,6 +13,7 @@ import '../../data/services/couple_service.dart';
 import '../../data/services/course_service.dart';
 import '../../domain/models/couple.dart';
 import '../../domain/models/course.dart';
+import '../../domain/models/next_date_info.dart';
 import '../../domain/models/user.dart' as model;
 
 class HomeScreen extends StatefulWidget {
@@ -32,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String _inviteeNickName = '';
   int _daysTogether = 0;
   int _monthDates = 0;
+  NextDateInfo? _nextDate;
 
   @override
   void initState() {
@@ -44,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (coupleId != null) {
       couple = await _coupleService.readCouple(coupleId);
       List<Course>? courseList = await _courseService.readCoursesByCoupleId(coupleId);
+      NextDateInfo? nextDateInfo = await _courseService.fetchNextDateInfo(coupleId: coupleId);
 
       String invitorNickName = '';
       String inviteeNickName = '';
@@ -70,6 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _inviteeNickName = inviteeNickName;
         _daysTogether = daysTogether;
         _monthDates = monthDate;
+        _nextDate = nextDateInfo;
       });
     }
   }
@@ -112,7 +116,10 @@ class _HomeScreenState extends State<HomeScreen> {
               monthDates: _monthDates,
             ),
             SizedBox(height: 78),
-            NextDateCard(),
+            if(_nextDate == null)
+              NextDateCard(dayText: '아직 없음', message: '다음 데이트 코스를 등록해볼까요? 💘',),
+            if(_nextDate != null)
+              NextDateCard(dayText: _nextDate!.dayText, message: _nextDate!.message,),
             HomeRecentCourseSection(
               itemCount: _courseList!.length < 5 ? _courseList!.length : 5,
               onTapAll: () {

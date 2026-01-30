@@ -187,7 +187,10 @@ class _HomeSummarySectionState extends State<HomeSummarySection> {
                       title: '공개\n코스',
                       iconGradient: [Color(0xFFC7A6FF), Color(0xFFE8DAFF)],
                       selected: _selectedIndex == 2,
-                      onTap: () => setState(() => _selectedIndex = 2),
+                      onTap: () => {
+                        setState(() => _selectedIndex = 2),
+                        context.go('/course?tab=public'),
+                      },
                     ),
                   ),
                 ],
