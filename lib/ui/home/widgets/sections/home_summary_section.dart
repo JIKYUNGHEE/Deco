@@ -7,7 +7,20 @@ import 'package:go_router/go_router.dart';
 import '../components/quick_action_card.dart';
 
 class HomeSummarySection extends StatefulWidget {
-  const HomeSummarySection({super.key});
+  final String invitor;
+  final String invitee;
+  final int daysTogether;
+  final int totalCourses;
+  final int monthDates;
+
+  const HomeSummarySection({
+    super.key,
+    required this.invitor,
+    required this.invitee,
+    required this.daysTogether,
+    required this.totalCourses,
+    required this.monthDates,
+  });
 
   @override
   State<HomeSummarySection> createState() => _HomeSummarySectionState();
@@ -64,7 +77,7 @@ class _HomeSummarySectionState extends State<HomeSummarySection> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                '지민 & 수현',
+                                '${widget.invitor} & ${widget.invitee}',
                                 style: Theme.of(context).textTheme.titleMedium
                                     ?.copyWith(
                                       color: Colors.white,
@@ -101,28 +114,28 @@ class _HomeSummarySectionState extends State<HomeSummarySection> {
                     SizedBox(
                       height: 124,
                       child: Row(
-                        children: const [
+                        children: [
                           Expanded(
                             child: SummaryStatCard(
                               emoji: '💕',
                               title: '함께한 날',
-                              value: 'D+365',
+                              value: 'D+${widget.daysTogether}',
                             ),
                           ),
-                          SizedBox(width: 12),
+                          const SizedBox(width: 12),
                           Expanded(
                             child: SummaryStatCard(
                               emoji: '📍',
                               title: '총 코스',
-                              value: '24개',
+                              value: '${widget.totalCourses}개',
                             ),
                           ),
-                          SizedBox(width: 12),
+                          const SizedBox(width: 12),
                           Expanded(
                             child: SummaryStatCard(
                               emoji: '⭐',
                               title: '이달의 데이트',
-                              value: '6회',
+                              value: '${widget.monthDates}회',
                             ),
                           ),
                         ],
@@ -163,7 +176,7 @@ class _HomeSummarySectionState extends State<HomeSummarySection> {
                       selected: _selectedIndex == 1,
                       onTap: () => {
                         setState(() => _selectedIndex = 1),
-                        context.go('/calendar')
+                        context.go('/calendar'),
                       },
                     ),
                   ),

@@ -102,7 +102,7 @@ class FirebaseAuthService {
     //계정삭제 코드 작성
   }
 
-  Future<void> updateCoupleNickname(Couple couple, String nickname1, String nickname2) async {
+  Future<void> updateCoupleNickname(Couple couple, String nickname1, String nickname2) async {  //TODO. UserService로 옮기기 or CoupleService
     await _fs.collection('users').doc(couple.invitee).update({
       'nickname': nickname1,
     });

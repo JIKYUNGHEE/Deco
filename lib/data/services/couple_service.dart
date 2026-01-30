@@ -57,14 +57,23 @@ class CoupleService {
     Couple? couple1 = await readMyCoupleByInvitor();
     Couple? couple2 = await readMyCoupleByInvitee();
     String? coupleId;
-    if (couple1 != null && couple1.invitor == uid) {
+    if (couple1 != null && couple1.invitor == uid && couple1.invitee != null) {
       coupleId = couple1.id;
     }
-    if (couple2 != null && couple2.invitee == uid) {
+    if (couple2 != null && couple2.invitee == uid && couple2.invitor != null) {
       coupleId = couple2.id;
     }
 
     return coupleId;
+  }
+
+  Future<Couple?> readCouple(String coupleId) async {
+    final couplesCollection = _fs.collection('couples');
+    final documentSnapshot = await couplesCollection.doc(coupleId).get();
+    if (!documentSnapshot.exists) throw Exception('no data');
+    final mapData = documentSnapshot.data()!;
+
+    return Couple.fromMap(mapData);
   }
 
 
