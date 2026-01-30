@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:deco/ui/core/themes/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 ///“다음 데이트” 요약 카드

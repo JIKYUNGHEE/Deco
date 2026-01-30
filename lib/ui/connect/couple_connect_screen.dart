@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import 'package:deco/data/services/couple_service.dart';
+import 'package:deco/domain/models/couple.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,7 +11,8 @@ import '../core/widgets/deco_primary_button.dart';
 import '../core/widgets/deco_outlined_button.dart';
 
 class CoupleConnectScreen extends StatelessWidget {
-  const CoupleConnectScreen({super.key});
+  CoupleConnectScreen({super.key});
+  final _coupleService = CoupleService();
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +85,7 @@ class CoupleConnectScreen extends StatelessWidget {
                       label: '커플 방 만들기',
                       prefixIcon: const Icon(Icons.link),
                       onPressed: () {
+                        createCoupleroom();
                         context.go('/create-room');
                       },
                     ),
@@ -111,6 +117,10 @@ class CoupleConnectScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void createCoupleroom() {
+    _coupleService.createCouple();
   }
 }
 

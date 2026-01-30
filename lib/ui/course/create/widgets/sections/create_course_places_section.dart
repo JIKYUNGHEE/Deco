@@ -1,3 +1,4 @@
+import 'package:deco/domain/models/place.dart';
 import 'package:deco/ui/core/widgets/deco_outlined_button.dart';
 import 'package:deco/ui/course/create/widgets/components/selected_place_chip.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../components/empty_places_hint.dart';
 
 class CreateCoursePlacesSection extends StatelessWidget {
-  final List<SelectedPlaceUi> places;
+  final List<Place> places;
   final VoidCallback? onTapAddPlace;
   final ValueChanged<int>? onRemovePlace;
 
@@ -44,9 +45,9 @@ class CreateCoursePlacesSection extends StatelessWidget {
                 padding: EdgeInsets.only(bottom: 10),
                 child: SelectedPlaceChip(
                   index: index + 1,
-                  title: place.title,
-                  tag: place.tag,
-                  location: place.location,
+                  title: place.name!,
+                  tag: place.type!,
+                  location: place.address!,
                   onRemove: onRemovePlace == null
                       ? null
                       : () => onRemovePlace!(index),
@@ -69,17 +70,4 @@ class CreateCoursePlacesSection extends StatelessWidget {
       ],
     );
   }
-}
-
-class SelectedPlaceUi {
-  //임시
-  final String title;
-  final String tag;
-  final String location;
-
-  const SelectedPlaceUi({
-    required this.title,
-    required this.tag,
-    required this.location,
-  });
 }
