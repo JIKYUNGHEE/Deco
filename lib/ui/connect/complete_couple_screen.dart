@@ -2,10 +2,12 @@ import 'package:deco/data/services/couple_service.dart';
 import 'package:deco/data/services/firebase_auth_service.dart';
 import 'package:deco/ui/core/themes/app_colors.dart';
 import 'package:deco/ui/core/widgets/deco_card.dart';
+import 'package:deco/viewmodels/couple_summary_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../domain/models/couple.dart';
 import '../core/themes/deco_theme_extension.dart';
@@ -265,6 +267,7 @@ class _CompleteCoupleScreenState extends State<CompleteCoupleScreen> {
                                 _firstNameCtrl.text,
                                 _secondNameCtrl.text,
                               );
+                              context.read<CoupleSummaryState>().load();
                               context.go('/home');
                             }
                           },

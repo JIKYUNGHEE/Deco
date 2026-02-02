@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import '../profile_edit_screen.dart';
 
 class CoupleNicknameSection extends StatelessWidget {
-  const CoupleNicknameSection({super.key});
+  final TextEditingController myNickNameController;
+  final TextEditingController coupleNickNameController;
+
+  const CoupleNicknameSection({super.key, required this.myNickNameController, required this.coupleNickNameController});
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +27,14 @@ class CoupleNicknameSection extends StatelessWidget {
           const SizedBox(height: 6),
           TextFormField(
             decoration: inputDecoration(hint: ''),
+            controller: myNickNameController,
           ),
           const SizedBox(height: 12),
           const Text('상대방 닉네임'),
           const SizedBox(height: 6),
           TextFormField(
             decoration: inputDecoration(hint: ''),
+            controller: coupleNickNameController,
           ),
           const SizedBox(height: 6),
           const Text('앱에서 보일 서로의 닉네임을 설정하세요',

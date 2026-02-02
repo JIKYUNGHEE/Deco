@@ -1,9 +1,12 @@
+import 'package:deco/data/services/couple_service.dart';
 import 'package:deco/ui/core/widgets/deco_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class CoupleDisconnectSection extends StatelessWidget {
-  const CoupleDisconnectSection({super.key});
+  final _coupleService = CoupleService();
+  CoupleDisconnectSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +58,10 @@ class CoupleDisconnectSection extends StatelessWidget {
 
     if (ok != true) return;
 
-    // ✅ FirebaseAuth 쓰면 아래 주석 해제
-    // await FirebaseAuth.instance.signOut();
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    String? coupleId = await _coupleService.findMyCoupleId(uid);
+    if(coupleId == null) return;
+    _coupleService.deleteCoupleAccount(coupleId);
 
     if (!context.mounted) return;
     context.go('/login');

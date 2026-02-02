@@ -1,6 +1,12 @@
+import 'package:deco/data/services/firebase_auth_service.dart';
+import 'package:deco/data/services/user_service.dart';
 import 'package:deco/ui/core/themes/deco_theme_extension.dart';
+import 'package:deco/viewmodels/couple_summary_state.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import 'components/gradient_top_bar.dart';
 import 'widgets/profile_character_section.dart';
@@ -15,6 +21,9 @@ class ProfileEditScreen extends StatefulWidget {
 }
 
 class _ProfileEditScreenState extends State<ProfileEditScreen> {
+  final _userService = UserService();
+  final _firebaseAuthService = FirebaseAuthService();
+
   final _formKey = GlobalKey<FormState>();
 
   final _nicknameController = TextEditingController();
@@ -23,6 +32,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
   BearColor _bearColor = BearColor.pink;
   Gender _gender = Gender.female;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -92,7 +106,16 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   void _onSave() {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
-    // TODO: 저장 로직 연결(서버/Firestore 등)
+    _formKey.currentState?.save();
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    _userService.updateBearColor(uid, _bearColor);
+    _userService.updateNickname(uid, _nicknameController.text.trim());
+    _userService.updateBirth(uid, DateFormat('yyyy.MM.dd').parse(_birthController.text.trim()));
+    _userService.updateGender(uid, _gender);
+    _userService.updateIntroduce(uid, _introController.text.trim());
+
+    context.read<CoupleSummaryState>().load();
+
     context.pop();
   }
 
@@ -118,7 +141,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     if (ok != true) return;
 
     // ✅ FirebaseAuth 쓰면 아래 주석 해제
-    // await FirebaseAuth.instance.signOut();
+    _firebaseAuthService.deleteAccount();
 
     if (!context.mounted) return;
     context.go('/login');

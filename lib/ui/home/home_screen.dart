@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> fetchData() async {
     String? coupleId = await _coupleService.findMyCoupleId(FirebaseAuth.instance.currentUser!.uid); //TODO. 임시. 나중에 로그인 할 때 객체 상태로 coupleId 가지고 있기.
     if (coupleId != null) {
-      List<Course>? courseList = await _courseService.readCoursesByCoupleId(coupleId);
+      List<Course> courseList = await _courseService.readCoursesByCoupleId(coupleId) ?? [];
       NextDateInfo? nextDateInfo = await _courseService.fetchNextDateInfo(coupleId: coupleId);
 
       setState(() {

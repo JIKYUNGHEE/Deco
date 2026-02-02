@@ -3,6 +3,7 @@ import 'package:deco/data/services/course_service.dart';
 import 'package:deco/data/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../domain/models/course.dart';
 import '../domain/models/user.dart' as model;
@@ -30,6 +31,7 @@ class CoupleSummaryState extends ChangeNotifier {
 
   String myNickName = '';
   String coupleNickName = '';
+  String anniversaryDate = '';
   int daysTogether = 0;
   int totalCourses = 0;
   int monthDates = 0;
@@ -55,6 +57,7 @@ class CoupleSummaryState extends ChangeNotifier {
       if (id == null) {
         myNickName = '';
         coupleNickName = '';
+        anniversaryDate = '';
         daysTogether = 0;
         totalCourses = 0;
         monthDates = 0;
@@ -65,6 +68,7 @@ class CoupleSummaryState extends ChangeNotifier {
         final a = couple!.anniversaryDate!;
         final today = DateTime.now();
         final start = DateTime(a.year, a.month, a.day);
+        anniversaryDate = DateFormat('yyyy.MM.dd').format(start);
         final now = DateTime(today.year, today.month, today.day);
         daysTogether = now.difference(start).inDays + 1; // D+1 기준
       } else {
@@ -94,6 +98,7 @@ class CoupleSummaryState extends ChangeNotifier {
       }
     } catch (e) {
       errorMessage = e.toString();
+      print(e.toString());
     } finally {
       _loading = false;
       notifyListeners();

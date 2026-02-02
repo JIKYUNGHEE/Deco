@@ -26,9 +26,9 @@ class Couple {
       id: doc.id,
       invitor: data['invitor'],
       invitee: data['invitee'],
-      anniversaryDate: data['anniversaryDate'],
+      anniversaryDate: (data['anniversaryDate'] as Timestamp?)?.toDate(),
       code: data['code'],
-      codeExpireDate: data['codeExpireDate'],
+      codeExpireDate: (data['codeExpireDate'] as Timestamp?)?.toDate(),
       deleteYN: data['deleteYN'],
     );
   }
@@ -58,9 +58,9 @@ class Couple {
       'id': id,
       'invitor': invitor,
       'invitee': invitee,
-      'anniversaryDate': anniversaryDate?.toIso8601String(),
+      'anniversaryDate': anniversaryDate,
       'code': code,
-      'codeExpireDate': codeExpireDate?.toIso8601String(),
+      'codeExpireDate': codeExpireDate,
       'deleteYN': deleteYN,
     };
   }
@@ -70,9 +70,9 @@ class Couple {
       id: map['id'],
       invitor: map['invitor'],
       invitee: map['invitee'],
-      anniversaryDate: map['anniversaryDate'] != null ? DateTime.parse(map['anniversaryDate']) : null,
+      anniversaryDate: (map['anniversaryDate'] as Timestamp?)?.toDate(),
       code: map['code'],
-      codeExpireDate: DateTime.parse(map['codeExpireDate']),
+      codeExpireDate: (map['codeExpireDate'] as Timestamp?)?.toDate(),
       deleteYN: map['deleteYN'],
     );
   }

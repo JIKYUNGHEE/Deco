@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 class MyPageSummarySection extends StatelessWidget {
   final String myNickName;
   final String coupleNickName;
+  final String anniversaryDate;
   final int daysTogether;
   final int totalCourses;
   final int monthDates;
@@ -13,6 +14,7 @@ class MyPageSummarySection extends StatelessWidget {
     super.key,
     required this.myNickName,
     required this.coupleNickName,
+    required this.anniversaryDate,
     required this.daysTogether,
     required this.totalCourses,
     required this.monthDates,
@@ -46,7 +48,7 @@ class MyPageSummarySection extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 14),
-              _MyPageWhiteCard(myNickName, coupleNickName, daysTogether, totalCourses, monthDates),
+              _MyPageWhiteCard(myNickName, coupleNickName, anniversaryDate, daysTogether, totalCourses, monthDates),
             ],
           ),
         ),
@@ -58,11 +60,12 @@ class MyPageSummarySection extends StatelessWidget {
 class _MyPageWhiteCard extends StatelessWidget {
   final String myNickName;
   final String coupleNickName;
+  final String anniversaryDate;
   final int daysTogether;
   final int totalCourses;
   final int monthDates;
 
-  const _MyPageWhiteCard(this.myNickName, this.coupleNickName, this.daysTogether, this.totalCourses, this.monthDates);
+  const _MyPageWhiteCard(this.myNickName, this.coupleNickName, this.anniversaryDate, this.daysTogether, this.totalCourses, this.monthDates);
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +110,7 @@ class _MyPageWhiteCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      '기념일: $daysTogether',
+                      '기념일: $anniversaryDate',
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         fontWeight: FontWeight.w600,
                         color: const Color(0xFFB0B0B0),

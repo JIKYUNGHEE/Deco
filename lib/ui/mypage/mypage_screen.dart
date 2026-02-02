@@ -25,6 +25,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
               MyPageSummarySection(
                 myNickName: summary.myNickName,
                 coupleNickName: summary.coupleNickName,
+                anniversaryDate: summary.anniversaryDate,
                 daysTogether: summary.daysTogether,
                 totalCourses: summary.totalCourses,
                 monthDates: summary.monthDates,

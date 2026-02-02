@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import '../profile_edit_screen.dart';
 
 class CoupleAnniversarySection extends StatelessWidget {
-  const CoupleAnniversarySection({super.key});
+  final TextEditingController anniversaryController;
+
+  const CoupleAnniversarySection({super.key, required this.anniversaryController,});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,8 @@ class CoupleAnniversarySection extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           TextFormField(
-            decoration: inputDecoration(hint: ''),
+            decoration: inputDecoration(hint: '예)2025.05.30'),
+            controller: anniversaryController,
           ),
           const SizedBox(height: 6),
           const Text('처음 만난 날이나 사귀기 시작한 날을 설정해요',

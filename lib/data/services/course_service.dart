@@ -187,7 +187,7 @@ class CourseService {
     final courseCollection = _fs.collection('course');
     final querySnapshot = await courseCollection
         .where('coupleId', isEqualTo: coupleId)
-        .where('date', isGreaterThanOrEqualTo: DateTime.now().toIso8601String())
+        .where('date', isGreaterThanOrEqualTo: DateTime.now())
         .orderBy('date')
         .limit(1)
         .get();
@@ -195,7 +195,7 @@ class CourseService {
     if (querySnapshot.docs.isEmpty) return null;
 
     final data = querySnapshot.docs.first.data();
-    final dateAt = DateTime.parse(data['date'] as String);
+    final dateAt = (data['date'] as Timestamp).toDate();
 
     return _formatNextDate(dateAt);
   }

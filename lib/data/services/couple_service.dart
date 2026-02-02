@@ -83,7 +83,7 @@ class CoupleService {
         await couplesCollection
             .where('code', isEqualTo: code)
             .where('deleteYN', isEqualTo: false)
-            .where('codeExpireDate', isGreaterThanOrEqualTo: DateTime.now().toIso8601String())
+            .where('codeExpireDate', isGreaterThanOrEqualTo: DateTime.now())
             .limit(1)
             .get();
 
@@ -99,6 +99,28 @@ class CoupleService {
     final couplesCollection = _fs.collection('couples');
     try {
       await couplesCollection.doc(couple.id).update(couple.toMap());
+    } catch(e) {
+      throw Exception('update 실패: $e');
+    }
+  }
+
+  Future<void> updateCoupleAnniversaryDate(String coupleId, DateTime anniversaryDate) async {
+    final couplesCollection = _fs.collection('couples');
+    try {
+      await  couplesCollection.doc(coupleId).update({
+        'anniversaryDate': anniversaryDate,
+      });
+    } catch(e) {
+      throw Exception('update 실패: $e');
+    }
+  }
+
+  Future<void> deleteCoupleAccount(String coupleId) async {
+    final couplesCollection = _fs.collection('couples');
+    try {
+      await  couplesCollection.doc(coupleId).update({
+        'deleteYN': true,
+      });
     } catch(e) {
       throw Exception('update 실패: $e');
     }
