@@ -1,6 +1,7 @@
 import 'package:deco/config/app_state.dart';
 import 'package:deco/routing/router.dart';
 import 'package:deco/ui/core/themes/deco_theme.dart';
+import 'package:deco/viewmodels/couple_summary_state.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -14,11 +15,15 @@ void main() async {
   final appState = AppState();
   initRouter(appState);
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(ChangeNotifierProvider.value(value: appState, child: const MyApp()));
+  runApp(
+    MultiProvider(
+      providers: [ChangeNotifierProvider.value(value: appState),
+      ChangeNotifierProvider(create: (_) => CoupleSummaryState()..load())],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -27,13 +32,9 @@ class MyApp extends StatelessWidget {
   // This widgets is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp.router(
       locale: const Locale('ko', 'KR'),
-      supportedLocales: const [
-        Locale('ko', 'KR'),
-        Locale('en', 'US'),
-      ],
+      supportedLocales: const [Locale('ko', 'KR'), Locale('en', 'US')],
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

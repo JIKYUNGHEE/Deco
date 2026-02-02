@@ -3,7 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class MyPageSummarySection extends StatelessWidget {
-  const MyPageSummarySection({super.key});
+  final String myNickName;
+  final String coupleNickName;
+  final int daysTogether;
+  final int totalCourses;
+  final int monthDates;
+
+  const MyPageSummarySection({
+    super.key,
+    required this.myNickName,
+    required this.coupleNickName,
+    required this.daysTogether,
+    required this.totalCourses,
+    required this.monthDates,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +46,7 @@ class MyPageSummarySection extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 14),
-              const _MyPageWhiteCard(),
+              _MyPageWhiteCard(myNickName, coupleNickName, daysTogether, totalCourses, monthDates),
             ],
           ),
         ),
@@ -43,7 +56,13 @@ class MyPageSummarySection extends StatelessWidget {
 }
 
 class _MyPageWhiteCard extends StatelessWidget {
-  const _MyPageWhiteCard();
+  final String myNickName;
+  final String coupleNickName;
+  final int daysTogether;
+  final int totalCourses;
+  final int monthDates;
+
+  const _MyPageWhiteCard(this.myNickName, this.coupleNickName, this.daysTogether, this.totalCourses, this.monthDates);
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +91,7 @@ class _MyPageWhiteCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '닉네임',
+                      myNickName,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w900,
                         color: const Color(0xFF1F1F1F),
@@ -80,7 +99,7 @@ class _MyPageWhiteCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '연결된 커플: ',
+                      '연결된 커플: $coupleNickName',
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                         color: const Color(0xFF7C7C7C),
@@ -88,7 +107,7 @@ class _MyPageWhiteCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      '기념일: 2024.04.01',
+                      '기념일: $daysTogether',
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         fontWeight: FontWeight.w600,
                         color: const Color(0xFFB0B0B0),
@@ -110,10 +129,10 @@ class _MyPageWhiteCard extends StatelessWidget {
               border: Border.all(color: const Color(0xFFFFC1DA), width: 1),
             ),
             child: Column(
-              children: const [
+              children: [
                 _NewsHeader(),
                 SizedBox(height: 10),
-                _NewsStatsRow(),
+                _NewsStatsRow(daysTogether, totalCourses, monthDates),
               ],
             ),
           ),
@@ -173,11 +192,7 @@ class _NewsHeader extends StatelessWidget {
             color: const Color(0xFFFF4FA3).withOpacity(0.12),
             borderRadius: BorderRadius.circular(6),
           ),
-          child: const Icon(
-            Icons.favorite,
-            size: 12,
-            color: Color(0xFFFF4FA3),
-          ),
+          child: const Icon(Icons.favorite, size: 12, color: Color(0xFFFF4FA3)),
         ),
         const SizedBox(width: 8),
         Text(
@@ -193,31 +208,26 @@ class _NewsHeader extends StatelessWidget {
 }
 
 class _NewsStatsRow extends StatelessWidget {
-  const _NewsStatsRow();
+  final int daysTogether;
+  final int totalCourses;
+  final int monthDates;
+
+  const _NewsStatsRow(this.daysTogether, this.totalCourses, this.monthDates);
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: const [
+      children: [
         Expanded(
-          child: _StatItem(
-            value: 'D+365',
-            label: '함께한 날',
-          ),
+          child: _StatItem(value: 'D+$daysTogether', label: '함께한 날'),
         ),
-        _VerticalDivider(),
+        const _VerticalDivider(),
         Expanded(
-          child: _StatItem(
-            value: '24개',
-            label: '데이트 코스',
-          ),
+          child: _StatItem(value: '$totalCourses개', label: '데이트 코스'),
         ),
-        _VerticalDivider(),
+        const _VerticalDivider(),
         Expanded(
-          child: _StatItem(
-            value: '8곳',
-            label: '이달의 데이트',
-          ),
+          child: _StatItem(value: '$monthDates곳', label: '이달의 데이트'),
         ),
       ],
     );
@@ -228,10 +238,7 @@ class _StatItem extends StatelessWidget {
   final String value;
   final String label;
 
-  const _StatItem({
-    required this.value,
-    required this.label,
-  });
+  const _StatItem({required this.value, required this.label});
 
   @override
   Widget build(BuildContext context) {
