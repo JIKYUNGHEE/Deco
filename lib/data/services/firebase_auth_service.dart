@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deco/domain/models/couple.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class FirebaseAuthService {
   final FirebaseAuth _auth;
@@ -100,6 +101,18 @@ class FirebaseAuthService {
 
   Future<void> deleteAccount() async {
     //계정삭제 코드 작성
+    try {
+      await _auth.currentUser?.delete();
+    } on FirebaseAuthException catch(e) {
+      if(e.code == 'requires-recent-login') {
+        rethrow;
+      } else {
+        throw Exception('탈퇴과정에 문제가 있습니다. ${e.toString()}');
+      }
+    } catch(e) {
+      print(e);
+      throw Exception('탈퇴과정에 문제가 있습니다. ${e.toString()}');
+    }
   }
 
   Future<void> updateCoupleNickname(Couple couple, String nickname1, String nickname2) async {  //TODO. UserService로 옮기기 or CoupleService

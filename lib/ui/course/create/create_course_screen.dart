@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:deco/data/services/course_service.dart';
 import 'package:deco/domain/models/course.dart';
 import 'package:deco/domain/models/place.dart';
+import 'package:deco/viewmodels/couple_summary_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import 'widgets/sections/create_course_actions_section.dart';
 import 'widgets/sections/create_course_basic_info_section.dart';
@@ -64,6 +66,8 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
     );
 
     _courseService.createCourse(course);
+
+    context.read<CoupleSummaryState>().load();
     context.go('/course');  //TODO. 수정 -> 홈에서도 create 갈 수 있음.
   }
 

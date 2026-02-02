@@ -10,6 +10,7 @@ import 'package:deco/ui/debug/theme_preview_page.dart';
 import 'package:deco/ui/connect/enter_invitation_code_screen.dart';
 import 'package:deco/ui/home/home_screen.dart';
 import 'package:deco/ui/login/login_screen.dart';
+import 'package:deco/ui/mypage/couple_edit_screen.dart';
 import 'package:deco/ui/mypage/mypage_screen.dart';
 import 'package:deco/ui/onboarding/onboarding_screen.dart';
 import 'package:deco/ui/terms/terms_agree_screen.dart';
@@ -19,6 +20,7 @@ import 'package:go_router/go_router.dart';
 import '../ui/auth/email_verify_screen.dart';
 import '../ui/auth/signup_screen.dart';
 import '../ui/course/list/course_screen.dart';
+import '../ui/mypage/profile_edit_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(
   debugLabel: 'root',
@@ -90,6 +92,8 @@ GoRouter createRouter(AppState appState) {
       GoRoute(path: '/connect-complete', builder: (context, state) => CompleteCoupleScreen()),
       GoRoute(path: '/create-course', builder: (context, state) => CreateCourseScreen()),
       GoRoute(path: '/create-place', parentNavigatorKey: _rootNavigatorKey, builder: (context, state) => CreatePlaceScreen()),
+      GoRoute(path: '/profile/edit', parentNavigatorKey: _rootNavigatorKey, builder: (context, state) => ProfileEditScreen()),
+      GoRoute(path: '/couple/edit', parentNavigatorKey: _rootNavigatorKey, builder: (context, state) => CoupleEditScreen()),
       StatefulShellRoute.indexedStack(
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state, navigationShell) {
@@ -135,7 +139,7 @@ GoRouter createRouter(AppState appState) {
               GoRoute(
                 path: '/mypage',
                 builder: (context, state) {
-                  return MypageScreen();
+                  return MyPageScreen();
                 },
               ),
             ],

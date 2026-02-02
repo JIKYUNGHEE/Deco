@@ -36,7 +36,7 @@ class Course {
     return Course(
       id: doc.id,
       title: data['title'],
-      date: data['date'],
+      date: (data['date'] as Timestamp?)?.toDate(),
       places: data['places'],
       daySentence: data['daySentence'],
       memo: data['memo'],
@@ -80,7 +80,7 @@ class Course {
     return {
       'id': id,
       'title': title,
-      'date':  date?.toIso8601String(),
+      'date':  date,
       'daySentence': daySentence,
       'memo': memo,
       'picture': picture,
@@ -95,7 +95,7 @@ class Course {
     return Course(
       id: map['id'],
       title: map['title'],
-      date: map['date'] != null ? DateTime.parse(map['date']) : null,
+      date: (map['date'] as Timestamp?)?.toDate(),
       places: map['places'],
       daySentence: map['daySentence'],
       memo: map['memo'],

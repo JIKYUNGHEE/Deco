@@ -2,9 +2,11 @@ import 'package:deco/data/services/couple_service.dart';
 import 'package:deco/domain/models/couple.dart';
 import 'package:deco/ui/core/widgets/deco_outlined_button.dart';
 import 'package:deco/ui/core/widgets/deco_primary_button.dart';
+import 'package:deco/viewmodels/couple_summary_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import 'widgets/couple_code_input_field.dart';
 import '../core/themes/app_colors.dart';
@@ -189,6 +191,7 @@ class _EnterInvitationCodeScreenState extends State<EnterInvitationCodeScreen> {
     String code = checkCodeList.join();
     Couple? couple = await _coupleService.readMyCoupleByCode(code);
     if(couple != null && code == couple.code) {
+        context.read<CoupleSummaryState>().load();
         context.go('/connect-complete');
     } else {
       if (mounted) {
