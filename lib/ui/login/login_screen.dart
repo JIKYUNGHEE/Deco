@@ -114,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
         .signInWithEmail(email: email, password: password)
         .then((_) {
       if (mounted) {
-        context.go('/connect');
+        context.push('/connect');
       }
     })
         .catchError((error) {
@@ -246,7 +246,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             DecoOutlinedButton(
                               label: '회원가입',
                               variant: DecoOutlinedVariant.normal,
-                              onPressed: () => context.go('/signup'),
+                              onPressed: () => context.push('/terms'),
                             ),
 
                             const SizedBox(height: 10),

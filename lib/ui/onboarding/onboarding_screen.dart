@@ -74,12 +74,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               children: [
                                 DecoPrimaryButton(
                                   label: '로그인',
-                                  onPressed: () => context.go('/login'),
+                                  onPressed: () => context.push('/login'),
                                 ),
                                 const SizedBox(height: 12),
                                 DecoOutlinedButton(
                                   label: '회원가입',
-                                  onPressed: () => context.go('/terms'),
+                                  onPressed: () => context.push('/terms'),
                                 ),
                               ],
                             )

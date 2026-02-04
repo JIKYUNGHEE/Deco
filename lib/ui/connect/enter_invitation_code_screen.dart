@@ -192,7 +192,7 @@ class _EnterInvitationCodeScreenState extends State<EnterInvitationCodeScreen> {
     Couple? couple = await _coupleService.readMyCoupleByCode(code);
     if(couple != null && code == couple.code) {
         context.read<CoupleSummaryState>().load();
-        context.go('/connect-complete');
+        context.push('/connect-complete');
     } else {
       if (mounted) {
         ScaffoldMessenger.of(

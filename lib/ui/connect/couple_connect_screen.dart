@@ -86,7 +86,7 @@ class CoupleConnectScreen extends StatelessWidget {
                       prefixIcon: const Icon(Icons.link),
                       onPressed: () {
                         createCoupleroom();
-                        context.go('/create-room');
+                        context.push('/create-room');
                       },
                     ),
                     const SizedBox(height: 12),
@@ -94,7 +94,7 @@ class CoupleConnectScreen extends StatelessWidget {
                       radius: 60,
                       label: '초대 코드 입력하기',
                       onPressed: () {
-                        context.go('/enter-code');
+                        context.push('/enter-code');
                       },
                     ),
                     const SizedBox(height: 16),

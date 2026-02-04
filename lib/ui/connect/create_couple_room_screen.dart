@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deco/data/services/couple_service.dart';
 import 'package:deco/ui/core/themes/app_colors.dart';
 import 'package:deco/ui/core/widgets/deco_outlined_button.dart';
 import 'package:deco/ui/core/widgets/deco_primary_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
@@ -33,6 +35,17 @@ class _CreateCoupleRoomScreenState extends State<CreateCoupleRoomScreen> {
     setState(() {
       code = couple?.code;
     });
+  }
+
+  void checkCoupleComplete() async {
+    final couple = await _coupleService.readMyCoupleByInvitor();
+    if(couple!= null && couple.invitee != null) {
+      context.push('/connect-complete');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('상대방이 연결될 때까지 기다려주세요.')),
+      );
+    }
   }
 
   @override
@@ -139,7 +152,13 @@ class _CreateCoupleRoomScreenState extends State<CreateCoupleRoomScreen> {
                           padding: const EdgeInsets.all(24.0),
                           child: DecoPrimaryButton(
                             label: '코드 복사하기',
-                            onPressed: () {},
+                            onPressed: () {
+                              Clipboard.setData(ClipboardData(text: code ?? '')).then((_) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('클립보드에 복사되었습니다.')),
+                                );
+                              });
+                            },
                             prefixIcon: Icon(Icons.copy_outlined),
                             radius: 60,
                           ),
@@ -149,15 +168,15 @@ class _CreateCoupleRoomScreenState extends State<CreateCoupleRoomScreen> {
                   ),
                 ),
 
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 24, 8, 0),
-                  child: DecoOutlinedButton(
-                    label: '다른 방법으로 공유하기',
-                    onPressed: () {},
-                    suffixIcon: Icon(Icons.share_outlined),
-                    radius: 60,
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(8, 24, 8, 0),
+                //   child: DecoOutlinedButton(
+                //     label: '다른 방법으로 공유하기',
+                //     onPressed: () {},
+                //     suffixIcon: Icon(Icons.share_outlined),
+                //     radius: 60,
+                //   ),
+                // ),
 
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -165,7 +184,9 @@ class _CreateCoupleRoomScreenState extends State<CreateCoupleRoomScreen> {
                     width: double.infinity,
                     height: 52,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        checkCoupleComplete();
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.darkBg,
                       ),

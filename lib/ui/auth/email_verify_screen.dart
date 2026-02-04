@@ -48,16 +48,16 @@ class EmailVerifyScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // back
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () => context.pop(),
-                            icon: Icon(Icons.chevron_left, color: deco.textPrimary),
-                          ),
-                          const Spacer(),
-                        ],
-                      ),
-
+                      // Row(
+                      //   children: [
+                      //     IconButton(
+                      //       onPressed: () => context.pop(),
+                      //       icon: Icon(Icons.chevron_left, color: deco.textPrimary),
+                      //     ),
+                      //     const Spacer(),
+                      //   ],
+                      // ),
+                      //
                       const SizedBox(height: 6),
 
                       // icon circle (메일 아이콘)

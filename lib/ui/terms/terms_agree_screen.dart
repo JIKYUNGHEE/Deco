@@ -175,7 +175,7 @@ class _TermsAgreeScreenState extends State<TermsAgreeScreen> {
                               child: DecoPrimaryButton(
                                 label: '동의하고 데코 시작하기  ❤',
                                 onPressed: () {
-                                  context.go('/signup');
+                                  context.push('/signup');
                                 },
                               ),
                             ),
