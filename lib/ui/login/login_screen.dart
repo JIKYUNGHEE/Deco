@@ -1,4 +1,6 @@
+import 'package:deco/data/services/couple_service.dart';
 import 'package:deco/data/services/firebase_auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,6 +19,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _auth = FirebaseAuthService();
+  final _coupleService = CoupleService();
 
   final _emailCtrl = TextEditingController();
   final _pwCtrl = TextEditingController();
@@ -27,11 +30,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool get _canSubmit =>
       _emailError == null &&
-          _pwError == null &&
-          _emailCtrl.text
-              .trim()
-              .isNotEmpty &&
-          _pwCtrl.text.isNotEmpty;
+      _pwError == null &&
+      _emailCtrl.text.trim().isNotEmpty &&
+      _pwCtrl.text.isNotEmpty;
 
   @override
   void initState() {
@@ -55,7 +56,6 @@ class _LoginScreenState extends State<LoginScreen> {
     _pwCtrl.dispose();
     super.dispose();
   }
-
 
   bool _isValidEmail(String email) {
     final reg = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$');
@@ -96,7 +96,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return err == null;
   }
 
-
   bool _validateAll() {
     final ok1 = _validateEmail();
     final ok2 = _validatePassword();
@@ -112,18 +111,28 @@ class _LoginScreenState extends State<LoginScreen> {
     String password = _pwCtrl.text.trim();
     _auth
         .signInWithEmail(email: email, password: password)
-        .then((_) {
-      if (mounted) {
-        context.push('/connect');
-      }
-    })
+        .then((_) async {
+          if (mounted) {
+            String? uid = FirebaseAuth.instance.currentUser?.uid;
+            if (uid != null) {
+              String? coupleId = await _coupleService.findMyCoupleId(uid);
+              if (coupleId != null) {  //커플 연결이 되어 있는 경우,
+                context.go('/home');
+              } else {
+                context.push('/connect'); //커플 연결이 되어 있지 않을 경우,
+              }
+            } else { //커플 연결이 되어 있지 않을 경우,
+              context.push('/connect');
+            }
+          }
+        })
         .catchError((error) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(error.toString())));
-      }
-    });
+          if (mounted) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(error.toString())));
+          }
+        });
   }
 
   @override
@@ -145,10 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0x00FFFFFF),
-                    Color(0xB3FFFFFF),
-                  ],
+                  colors: [Color(0x00FFFFFF), Color(0xB3FFFFFF)],
                 ),
               ),
             ),
@@ -157,18 +163,16 @@ class _LoginScreenState extends State<LoginScreen> {
           SafeArea(
             child: LayoutBuilder(
               builder: (context, constraints) {
-                final bottomInset = MediaQuery
-                    .of(context)
-                    .viewInsets
-                    .bottom;
+                final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
                 return SingleChildScrollView(
                   padding: EdgeInsets.fromLTRB(20, 20, 20, 20 + bottomInset),
                   keyboardDismissBehavior:
-                  ScrollViewKeyboardDismissBehavior.onDrag,
+                      ScrollViewKeyboardDismissBehavior.onDrag,
                   child: ConstrainedBox(
-                    constraints:
-                    BoxConstraints(minHeight: constraints.maxHeight - 40),
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight - 40,
+                    ),
                     child: Center(
                       child: _LoginCard(
                         child: Column(
@@ -234,7 +238,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                             DecoPrimaryButton(
                               label: '로그인',
-                              onPressed:_canSubmit ? _onSubmit : null,
+                              onPressed: _canSubmit ? _onSubmit : null,
                             ),
 
                             const SizedBox(height: 18),
@@ -323,9 +327,7 @@ class _DividerOr extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Expanded(
-          child: Divider(thickness: 1, color: Color(0xFFE5E7EB)),
-        ),
+        const Expanded(child: Divider(thickness: 1, color: Color(0xFFE5E7EB))),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Text(
@@ -337,9 +339,7 @@ class _DividerOr extends StatelessWidget {
             ),
           ),
         ),
-        const Expanded(
-          child: Divider(thickness: 1, color: Color(0xFFE5E7EB)),
-        ),
+        const Expanded(child: Divider(thickness: 1, color: Color(0xFFE5E7EB))),
       ],
     );
   }
