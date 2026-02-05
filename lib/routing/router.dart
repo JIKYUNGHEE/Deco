@@ -46,35 +46,52 @@ GoRouter createRouter(AppState appState) {
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/onboarding',
     refreshListenable: appState,
-    // redirect: (context, state) {
-    //   final loc = state.matchedLocation;
-    //
-    //   if(loc == '/theme') return null;
-    //
-    //   final inOnboarding = loc == '/onboarding';
-    //   final inLogin = loc == '/login';
-    //   final inConnect = loc == '/connect';
-    //
-    //   final inShell = loc == '/home' || loc =='/course' || loc == '/calendar' || loc == '/mypage';
-    //
-    //   if(!appState.onboardingDone) {
-    //     return inOnboarding ? null : '/onboarding';
-    //   }
-    //
-    //   if(!appState.signedIn) {
-    //     return inLogin ? null : '/login';
-    //   }
-    //
-    //   if(!appState.coupleConnected) {
-    //     return inConnect ? null : '/connect';
-    //   }
-    //
-    //   if(inOnboarding || inLogin || inConnect) {
-    //     return '/home';
-    //   }
-    //
-    //   return null;
-    // },
+    redirect: (context, state) {
+      final loc = state.matchedLocation;
+
+      if (!appState.initialized) return null;
+
+      if(loc == '/theme') return null;
+
+      final inOnboarding = loc.startsWith('/onboarding');
+      final inLogin = loc.startsWith('/login');
+      final inTerms = loc.startsWith('/terms');
+      final inSignup = loc.startsWith('/signup');
+      final inVerify = loc.startsWith('/verify-email');
+      final inConnectFlow = loc.startsWith('/connect') ||
+          loc.startsWith('/create-room') ||
+          loc.startsWith('/enter-code') ||
+          loc.startsWith('/connect-complete');
+
+      final authFree = inLogin || inTerms || inSignup;
+      final signedIn = appState.signedIn;
+      final verified = appState.emailVerified;
+      final hasCouple = appState.hasCouple;
+
+      final inShell = loc == '/home' || loc =='/course' || loc == '/calendar' || loc == '/mypage';
+
+      if(!appState.onboardingDone) {
+        return inOnboarding ? null : '/onboarding';
+      }
+
+      if (!signedIn) {
+        return authFree ? null : '/login';
+      }
+
+      if (!verified) {
+        return inVerify ? null : '/verify-email';
+      }
+
+      if (signedIn && verified && !hasCouple) {
+        return inConnectFlow ? null : '/connect';
+      }
+
+      if (signedIn && verified && hasCouple && inConnectFlow) {
+        return '/home';
+      }
+
+      return null;
+    },
     routes: [
       GoRoute(path: '/theme', builder: (context, state) => ThemePreviewPage()),
       GoRoute(path: '/onboarding', builder: (context, state) => OnboardingScreen()),
@@ -82,7 +99,7 @@ GoRouter createRouter(AppState appState) {
       GoRoute(path: '/signup', builder: (context, state) => SignupScreen()),
       GoRoute(
           path: '/verify-email', builder: (context, state) {
-        final email = state.extra as String;
+        final email = state.extra as String?;
         return EmailVerifyScreen(email: email);
       }),
       GoRoute(path: '/login', builder: (context, state) => LoginScreen()),

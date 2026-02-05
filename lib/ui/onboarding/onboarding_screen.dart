@@ -1,8 +1,10 @@
+import 'package:deco/config/app_state.dart';
 import 'package:deco/ui/onboarding/widgets/onboarding_card.dart';
 import 'package:deco/ui/onboarding/widgets/onboarding_dots.dart';
 import 'package:deco/ui/onboarding/widgets/onboarding_mock_illustrations.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../core/widgets/deco_outlined_button.dart';
 import '../core/widgets/deco_primary_button.dart';
 
@@ -74,12 +76,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               children: [
                                 DecoPrimaryButton(
                                   label: '로그인',
-                                  onPressed: () => context.push('/login'),
+                                  onPressed: () => {
+                                    context.read<AppState>().setOnboardingDone(true),
+                                    context.go('/login'),
+                                  },
                                 ),
                                 const SizedBox(height: 12),
                                 DecoOutlinedButton(
                                   label: '회원가입',
-                                  onPressed: () => context.push('/terms'),
+                                  onPressed: () => {
+                                    context.read<AppState>().setOnboardingDone(true),
+                                    context.go('/terms'),
+                                  },
                                 ),
                               ],
                             )

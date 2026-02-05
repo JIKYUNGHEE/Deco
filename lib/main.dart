@@ -12,10 +12,12 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final appState = AppState();
-  initRouter(appState);
-
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  final appState = AppState();
+  await appState.init();
+
+  initRouter(appState);
 
   runApp(
     MultiProvider(

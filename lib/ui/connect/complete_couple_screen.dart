@@ -1,8 +1,10 @@
+import 'package:deco/config/app_state.dart';
 import 'package:deco/data/services/couple_service.dart';
 import 'package:deco/data/services/firebase_auth_service.dart';
 import 'package:deco/ui/core/themes/app_colors.dart';
 import 'package:deco/ui/core/widgets/deco_card.dart';
 import 'package:deco/viewmodels/couple_summary_state.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
@@ -255,8 +257,15 @@ class _CompleteCoupleScreenState extends State<CompleteCoupleScreen> {
                         width: double.infinity,
                         child: OutlinedButton(
                           onPressed: () async {
-                            Couple? couple = await _coupleService
-                                .readMyCoupleByInvitee();
+                            String? coupleId = await _coupleService.findMyCoupleId(FirebaseAuth.instance.currentUser!.uid);
+                            if(coupleId == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('커플 정보를 찾지 못했어요. 잠시 후 다시 시도해 주세요.')),
+                              );
+                              return;
+                            }
+
+                            Couple? couple = await _coupleService.readCouple(coupleId);
                             if (couple != null) {
                               final updated = couple.copyWith(
                                 anniversaryDate: _selectedDate,
@@ -267,7 +276,8 @@ class _CompleteCoupleScreenState extends State<CompleteCoupleScreen> {
                                 _firstNameCtrl.text,
                                 _secondNameCtrl.text,
                               );
-                              context.read<CoupleSummaryState>().load();
+                              await context.read<CoupleSummaryState>().load();
+                              await context.read<AppState>().loadCoupleState(FirebaseAuth.instance.currentUser!.uid);
                               context.go('/home');
                             }
                           },
@@ -285,13 +295,13 @@ class _CompleteCoupleScreenState extends State<CompleteCoupleScreen> {
                         ),
                       ),
 
-                      Text(
-                        '나중에 설정하기',
-                        style: TextStyle(
-                          color: AppColors.surface,
-                          fontSize: 14,
-                        ),
-                      ),
+                      // Text(
+                      //   '나중에 설정하기',
+                      //   style: TextStyle(
+                      //     color: AppColors.surface,
+                      //     fontSize: 14,
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

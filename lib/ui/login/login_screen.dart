@@ -3,7 +3,9 @@ import 'package:deco/data/services/firebase_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
+import '../../config/app_state.dart';
 import '../auth/bear_in_love_illustration.dart';
 import '../core/themes/deco_theme_extension.dart';
 import '../core/widgets/deco_primary_button.dart';
@@ -119,10 +121,10 @@ class _LoginScreenState extends State<LoginScreen> {
               if (coupleId != null) {  //커플 연결이 되어 있는 경우,
                 context.go('/home');
               } else {
-                context.push('/connect'); //커플 연결이 되어 있지 않을 경우,
+                context.go('/connect'); //커플 연결이 되어 있지 않을 경우,
               }
             } else { //커플 연결이 되어 있지 않을 경우,
-              context.push('/connect');
+              context.go('/connect');
             }
           }
         })

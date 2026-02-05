@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -7,12 +8,25 @@ import '../core/widgets/deco_primary_button.dart';
 
 
 class EmailVerifyScreen extends StatelessWidget {
-  final String email; // 회원가입에서 전달
+  final String? email; // 회원가입에서 전달
 
   const EmailVerifyScreen({
     super.key,
     required this.email,
   });
+
+  Future<void> checkVerified(BuildContext context) async {
+    final user = FirebaseAuth.instance.currentUser;
+    await user?.reload();
+    final refreshed = FirebaseAuth.instance.currentUser;
+
+    if (refreshed?.emailVerified == true) {
+      await FirebaseAuth.instance.signOut();
+      if (context.mounted) context.go('/login');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('이메일 인증이 아직 진행되지 않았어요. 인증을 진행해주세요.')));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +102,7 @@ class EmailVerifyScreen extends StatelessWidget {
                       const SizedBox(height: 6),
 
                       Text(
-                        email,
+                        email ?? '',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w900,
@@ -130,7 +144,7 @@ class EmailVerifyScreen extends StatelessWidget {
                         label: '이메일 인증 확인',
                         prefixIcon: const Icon(Icons.check_circle_outline, color: Colors.white),
                         onPressed: () {
-                          context.go('/login');
+                          checkVerified(context);
                         },
                       ),
 

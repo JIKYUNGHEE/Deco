@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../config/app_state.dart';
 import 'widgets/couple_code_input_field.dart';
 import '../core/themes/app_colors.dart';
 import '../core/themes/deco_theme_extension.dart';
@@ -155,31 +156,31 @@ class _EnterInvitationCodeScreenState extends State<EnterInvitationCodeScreen> {
                 ),
               ),
 
-              Padding(
-                padding: const EdgeInsets.only(top: 32),
-                child: Text(
-                  '아직 연인과 함께 쓰지 않아도 괜찮다면,',
-                  style: TextStyle(
-                    color: decoTheme.textSecondary,
-                    fontSize: 12,
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(top: 32),
+              //   child: Text(
+              //     '아직 연인과 함께 쓰지 않아도 괜찮다면,',
+              //     style: TextStyle(
+              //       color: decoTheme.textSecondary,
+              //       fontSize: 12,
+              //     ),
+              //   ),
+              // ),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 4,
-                ),
-                child: DecoOutlinedButton(
-                  label: '혼자 먼저 데이트 기록 시작하기',
-                  onPressed: () {
-                    context.go('/home');
-                  },
-                  height: 58,
-                  radius: 60,
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(
+              //     horizontal: 32,
+              //     vertical: 4,
+              //   ),
+              //   child: DecoOutlinedButton(
+              //     label: '혼자 먼저 데이트 기록 시작하기',
+              //     onPressed: () {
+              //       context.go('/home');
+              //     },
+              //     height: 58,
+              //     radius: 60,
+              //   ),
+              // ),
             ],
           ),
         ),

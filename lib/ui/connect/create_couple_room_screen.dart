@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
+import '../../config/app_state.dart';
 import '../../domain/models/couple.dart';
 import '../core/themes/deco_theme_extension.dart';
 

@@ -33,17 +33,17 @@ class CoupleConnectScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () => context.pop(),
-                      icon: Icon(
-                        Icons.chevron_left,
-                        color: decoTheme.textPrimary,
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     IconButton(
+                //       onPressed: () => context.pop(),
+                //       icon: Icon(
+                //         Icons.chevron_left,
+                //         color: decoTheme.textPrimary,
+                //       ),
+                //     ),
+                //   ],
+                // ),
 
                 Expanded(
                   child: Column(
