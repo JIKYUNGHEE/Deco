@@ -126,6 +126,21 @@ class CoupleService {
     }
   }
 
+  Future<void> detachUserFromCouples(String uid) async {
+    final couplesCollection = _fs.collection('couples');
+    final q1 = await couplesCollection.where('invitor', isEqualTo: uid).where('deleteYN', isEqualTo: false).limit(1).get();
+    if(q1.docs.isNotEmpty) {
+      await q1.docs.first.reference.update({'invitor': null});
+      return;
+    }
+
+    final q2 = await couplesCollection.where('invitee', isEqualTo: uid).where('deleteYN', isEqualTo: false).limit(1).get();
+    if(q2.docs.isNotEmpty) {
+      await q2.docs.first.reference.update({'invitee': null});
+      return;
+    }
+  }
+
   String generateCoupleCode() {
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const numbers = '0123456789';
