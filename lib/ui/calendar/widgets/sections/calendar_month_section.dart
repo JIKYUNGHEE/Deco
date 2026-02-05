@@ -1,36 +1,63 @@
 import 'package:deco/ui/core/themes/app_colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../../data/services/couple_service.dart';
+import '../../../../data/services/course_service.dart';
+import '../../../../domain/models/course.dart';
+
 class CalendarMonthSection extends StatefulWidget {
-  const CalendarMonthSection({super.key});
+  final DateTime selectedDay;
+  final void Function(DateTime day) onSelectDay;
+  final void Function(List<Course>) onCoursesLoaded;
+
+  const CalendarMonthSection({
+    super.key,
+    required this.selectedDay,
+    required this.onSelectDay,
+    required this.onCoursesLoaded,
+  });
 
   @override
   State<CalendarMonthSection> createState() => _CalendarMonthSectionState();
 }
 
 class Event {
-  String title;
-  Event(this.title);
+  final String title;
+  final Course course;
+
+  Event({required this.title, required this.course});
 }
 
-Map<DateTime,List<Event>> events = {
-  DateTime(2026, 1, 9): [
-    Event('야경 드라이브'),
-    Event('야경 드라이브'),
-    Event('야경 드라이브'),
-  ],
-  DateTime(2026, 01, 12): [
-    Event('홍대 데이트'),
-  ],
-};
+Map<DateTime, List<Event>> buildEventMap(List<Course> courses) {
+  final Map<DateTime, List<Event>> events = {};
 
-List<Event> _getEventsForDay(DateTime day) {
-  final key = DateTime(day.year, day.month, day.day);
-  return events[key] ?? [];
+  for (final course in courses) {
+    if (course.date == null) continue;
+
+    final dateKey = DateTime(
+      course.date!.year,
+      course.date!.month,
+      course.date!.day,
+    );
+
+    final event = Event(title: course.title ?? '제목 없는 데이트', course: course);
+
+    if (events.containsKey(dateKey)) {
+      events[dateKey]!.add(event);
+    } else {
+      events[dateKey] = [event];
+    }
+  }
+
+  return events;
 }
 
 class _CalendarMonthSectionState extends State<CalendarMonthSection> {
+  final CoupleService _coupleService = CoupleService();
+  final CourseService _courseService = CourseService();
+
   final CalendarStyle _decoTableCalendarStyle = CalendarStyle(
     todayDecoration: BoxDecoration(
       shape: BoxShape.circle,
@@ -50,15 +77,43 @@ class _CalendarMonthSectionState extends State<CalendarMonthSection> {
     markerSize: 8.0,
     markersAnchor: 0.1,
     markerDecoration: BoxDecoration(
-        color: AppColors.primary,
-        shape: BoxShape.circle
+      color: AppColors.primary,
+      shape: BoxShape.circle,
     ),
     outsideDaysVisible: false,
     todayTextStyle: TextStyle(color: Colors.black),
   );
 
-  DateTime _focusedDay = DateTime.now();
-  DateTime _selectedDay = DateTime.now();
+  late DateTime _focusedDay;
+  Map<DateTime, List<Event>> _events = {};
+  List<Course>? _courseList = [];
+
+  List<Event> _getEventsForDay(DateTime day) {
+    final key = DateTime(day.year, day.month, day.day);
+
+    return _events[key] ?? [];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _focusedDay = widget.selectedDay;
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    String? coupleId = await _coupleService.findMyCoupleId(FirebaseAuth.instance.currentUser!.uid); //TODO. 임시. 나중에 로그인 할 때 객체 상태로 coupleId 가지고 있기.
+    if (coupleId != null) {
+      List<Course>? courseList = await _courseService.readCoursesByCoupleId(coupleId);
+      if(courseList != null) {
+        widget.onCoursesLoaded(courseList);
+      }
+      setState(() {
+        _courseList = courseList;
+        _events = buildEventMap(courseList!);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,18 +141,18 @@ class _CalendarMonthSectionState extends State<CalendarMonthSection> {
           ),
           locale: 'ko_KR',
           firstDay: DateTime.utc(2010, 10, 16),
-          lastDay: DateTime.utc(2030, 3, 14),
+          lastDay: DateTime.utc(2060, 3, 14),
           focusedDay: _focusedDay,
 
           eventLoader: _getEventsForDay,
 
           selectedDayPredicate: (day) {
-            return isSameDay(_selectedDay, day);
+            return isSameDay(widget.selectedDay, day);
           },
 
           onDaySelected: (selectedDay, focusedDay) {
+            widget.onSelectDay(selectedDay);
             setState(() {
-              _selectedDay = selectedDay;
               _focusedDay = focusedDay;
             });
           },

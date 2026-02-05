@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/widgets/deco_outlined_button.dart';
 
-enum CourseSortFilter { latest, popular }
+enum CourseSortFilter { latest }//, popular }
 
 enum CoursePeriodFilter {
   all, // 전체 기간
@@ -35,8 +35,8 @@ class CourseFilterSection extends StatelessWidget {
     switch (v) {
       case CourseSortFilter.latest:
         return '최신순';
-      case CourseSortFilter.popular:
-        return '인기순';
+      // case CourseSortFilter.popular:
+      //   return '인기순';
     }
   }
 

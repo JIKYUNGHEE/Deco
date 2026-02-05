@@ -199,7 +199,7 @@ class _OnboardingPage3 extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           const Text(
-            '캘린더로 보고\n지도도 보고\n언제든 다시 꺼내볼 수 있어요',
+            '캘린더로 보면서\n언제든 다시 꺼내볼 수 있어요',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14,

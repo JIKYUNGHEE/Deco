@@ -10,22 +10,22 @@ class CourseCtaSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        DecoOutlinedButton(
+        DecoPrimaryButton(
           label: '새 코스 만들기',
           onPressed: () {
-            context.go('/create-course');
+            context.push('/create-course');
           },
           height: 52,
           radius: 20,
         ),
         SizedBox(height: 8),
-        DecoPrimaryButton(
-          prefixIcon: Icon(Icons.pin_drop_outlined),
-          label: '우리 코스 전체 지도 보기',
-          onPressed: () {},
-          height: 52,
-          radius: 20,
-        ),
+        // DecoPrimaryButton(
+        //   prefixIcon: Icon(Icons.pin_drop_outlined),
+        //   label: '우리 코스 전체 지도 보기',
+        //   onPressed: () {},
+        //   height: 52,
+        //   radius: 20,
+        // ),
       ],
     );
   }
