@@ -1,3 +1,5 @@
+import 'package:deco/data/services/account_service.dart';
+import 'package:deco/data/services/couple_service.dart';
 import 'package:deco/data/services/firebase_auth_service.dart';
 import 'package:deco/data/services/user_service.dart';
 import 'package:deco/ui/core/themes/deco_theme_extension.dart';
@@ -22,7 +24,9 @@ class ProfileEditScreen extends StatefulWidget {
 
 class _ProfileEditScreenState extends State<ProfileEditScreen> {
   final _userService = UserService();
-  final _firebaseAuthService = FirebaseAuthService();
+  final _authService = FirebaseAuthService();
+  final _coupleService = CoupleService();
+  late final _accountService;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -36,6 +40,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   @override
   void initState() {
     super.initState();
+    _accountService = AccountService(
+      _authService,
+      _coupleService,
+      _userService,
+    );
   }
 
   @override
@@ -110,7 +119,10 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     String uid = FirebaseAuth.instance.currentUser!.uid;
     _userService.updateBearColor(uid, _bearColor);
     _userService.updateNickname(uid, _nicknameController.text.trim());
-    _userService.updateBirth(uid, DateFormat('yyyy.MM.dd').parse(_birthController.text.trim()));
+    _userService.updateBirth(
+      uid,
+      DateFormat('yyyy.MM.dd').parse(_birthController.text.trim()),
+    );
     _userService.updateGender(uid, _gender);
     _userService.updateIntroduce(uid, _introController.text.trim());
 
@@ -140,12 +152,72 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
     if (ok != true) return;
 
-    // ✅ FirebaseAuth 쓰면 아래 주석 해제
-    _firebaseAuthService.deleteAccount();
+    try {
+      await _accountService.deleteAccount();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        final password = await _askPassword(context);
+        if (password == null || password.isEmpty) return;
+
+        try {
+          await _authService.reauthenticateWithPassword(password);
+          await _accountService.deleteAccount();
+        } on FirebaseAuthException catch (e) {
+          if (!context.mounted) return;
+
+          final msg = (e.code == 'wrong-password')
+              ? '비밀번호가 올바르지 않아요.'
+              : '재인증에 실패했어요. (${e.code})';
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(msg)),
+          );
+          return;
+        }
+      } else {
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('탈퇴에 실패했어요. (${e.code})')),
+        );
+        return;
+      }
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('탈퇴 중 오류가 발생했어요.')),
+      );
+      return;
+    }
 
     if (!context.mounted) return;
     context.go('/login');
   }
+}
+
+Future<String?> _askPassword(BuildContext context) async {
+  final controller = TextEditingController();
+  return showDialog<String>(
+    context: context,
+    barrierDismissible: false,
+    builder: (ctx) => AlertDialog(
+      title: const Text('비밀번호 확인'),
+      content: TextField(
+        controller: controller,
+        obscureText: true,
+        decoration: const InputDecoration(hintText: '현재 비밀번호를 입력하세요'),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(ctx).pop(null),
+          child: const Text('취소'),
+        ),
+        TextButton(
+          onPressed: () => Navigator.of(ctx).pop(controller.text.trim()),
+          child: const Text('확인'),
+        ),
+      ],
+    ),
+  );
 }
 
 enum BearColor { pink, purple, blue, green }

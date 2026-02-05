@@ -41,4 +41,8 @@ class UserService {
       'introduce': introduce,
     });
   }
+
+  Future<void> deleteUser(String uid) async {
+    await _db.collection('users').doc(uid).delete();
+  }
 }

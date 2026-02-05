@@ -115,6 +115,18 @@ class FirebaseAuthService {
     }
   }
 
+  Future<void> reauthenticateWithPassword(String password) async {
+    final user = _auth.currentUser;
+    final email = user?.email;
+
+    if (user == null || email == null) {
+      throw Exception('로그인 정보가 없습니다.');
+    }
+
+    final cred = EmailAuthProvider.credential(email: email, password: password);
+    await user.reauthenticateWithCredential(cred);
+  }
+
   Future<void> updateCoupleNickname(Couple couple, String nickname1, String nickname2) async {  //TODO. UserService로 옮기기 or CoupleService
     await _fs.collection('users').doc(couple.invitee).update({
       'nickname': nickname1,

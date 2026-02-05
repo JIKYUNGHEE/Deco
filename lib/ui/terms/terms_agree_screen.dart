@@ -157,7 +157,7 @@ class _TermsAgreeScreenState extends State<TermsAgreeScreen> {
                                     setState(() {});
                                   },
                                   trailing: _ViewLink(
-                                    onTap: () => openUrl(NotionLinks.serviceTerms),
+                                    onTap: () => openUrl(NotionLinks.marketing),
                                   ),
                                   subText: '선택 항목에 동의하지 않아도 서비스 이용이 가능합니다',
                                 ),
@@ -175,7 +175,7 @@ class _TermsAgreeScreenState extends State<TermsAgreeScreen> {
                               child: DecoPrimaryButton(
                                 label: '동의하고 데코 시작하기  ❤',
                                 onPressed: () {
-                                  context.go('/signup');
+                                  context.push('/signup');
                                 },
                               ),
                             ),

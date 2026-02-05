@@ -1,5 +1,8 @@
+import 'package:deco/config/app_state.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class MyPageSettingsSection extends StatelessWidget {
   const MyPageSettingsSection({super.key});
@@ -81,8 +84,7 @@ class MyPageSettingsSection extends StatelessWidget {
 
     if (ok != true) return;
 
-    // ✅ FirebaseAuth 쓰면 아래 주석 해제
-    // await FirebaseAuth.instance.signOut();
+    await FirebaseAuth.instance.signOut();
 
     if (!context.mounted) return;
     context.go('/login');
