@@ -17,6 +17,7 @@ class CalendarScreen extends StatefulWidget {
 class _CalendarScreenState extends State<CalendarScreen> {
   DateTime _selectedDay = DateTime.now();
   Map<DateTime, List<Event>> _events = {};
+  int _reloadToken = 0;
 
   void _onSelectDay(DateTime day) {
     setState(() {
@@ -47,6 +48,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     selectedDay: _selectedDay,
                     onSelectDay: _onSelectDay,
                     onCoursesLoaded: _updateEvents,
+                    reloadToken: _reloadToken,
                   ),
                   CalendarDayCoursesSection(
                     selectedDay: _selectedDay,
@@ -59,7 +61,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () { context.push('/create-course');},
+        onPressed: () async {
+          final created = await context.push<bool>('/create-course');
+          if(created == true) {
+            setState(() => _reloadToken++);
+          }
+        },
         child: Container(
           width: 60,
           height: 60,

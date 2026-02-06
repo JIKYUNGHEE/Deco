@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class CourseCtaSection extends StatelessWidget {
-  const CourseCtaSection({super.key});
+  final Future<void> Function() onCreated;
+
+  const CourseCtaSection({super.key, required this.onCreated });
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +14,12 @@ class CourseCtaSection extends StatelessWidget {
       children: [
         DecoPrimaryButton(
           label: '새 코스 만들기',
-          onPressed: () {
-            context.push('/create-course');
+          onPressed: () async {
+            final created = await context.push<bool>('/create-course');
+
+            if(created == true) {
+              await onCreated();
+            }
           },
           height: 52,
           radius: 20,

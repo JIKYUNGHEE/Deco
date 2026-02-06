@@ -41,6 +41,16 @@ class _CoupleEditScreenState extends State<CoupleEditScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    final state = context.read<CoupleSummaryState>();
+    _anniversaryController.text = state.anniversaryDate;
+    _myNicknameController.text = state.myNickName;
+    _coupleNameController.text = state.coupleNickName;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final decoTheme = Theme.of(context).extension<DecoThemeExtension>()!;
     final summary = context.watch<CoupleSummaryState>();
@@ -90,11 +100,11 @@ class _CoupleEditScreenState extends State<CoupleEditScreen> {
     String? coupleUid = couple.invitor == uid ? couple.invitee : couple.invitor;
     if(coupleUid == null) return;
 
-    _userService.updateNickname(uid, _myNicknameController.text.trim());
-    _userService.updateNickname(coupleUid, _coupleNameController.text.trim());
-    _coupleService.updateCoupleAnniversaryDate(coupleId, DateFormat('yyyy.MM.dd').parse(_anniversaryController.text.trim()));
+    await _userService.updateNickname(uid, _myNicknameController.text.trim());
+    await _userService.updateNickname(coupleUid, _coupleNameController.text.trim());
+    await _coupleService.updateCoupleAnniversaryDate(coupleId, DateFormat('yyyy.MM.dd').parse(_anniversaryController.text.trim()));
 
-    context.read<CoupleSummaryState>().load();
+    await context.read<CoupleSummaryState>().load();
     context.pop();
   }
 }

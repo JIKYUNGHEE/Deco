@@ -11,12 +11,14 @@ class CalendarMonthSection extends StatefulWidget {
   final DateTime selectedDay;
   final void Function(DateTime day) onSelectDay;
   final void Function(List<Course>) onCoursesLoaded;
+  final int reloadToken;
 
   const CalendarMonthSection({
     super.key,
     required this.selectedDay,
     required this.onSelectDay,
     required this.onCoursesLoaded,
+    required this.reloadToken,
   });
 
   @override
@@ -86,7 +88,6 @@ class _CalendarMonthSectionState extends State<CalendarMonthSection> {
 
   late DateTime _focusedDay;
   Map<DateTime, List<Event>> _events = {};
-  List<Course>? _courseList = [];
 
   List<Event> _getEventsForDay(DateTime day) {
     final key = DateTime(day.year, day.month, day.day);
@@ -101,18 +102,36 @@ class _CalendarMonthSectionState extends State<CalendarMonthSection> {
     fetchData();
   }
 
-  Future<void> fetchData() async {
-    String? coupleId = await _coupleService.findMyCoupleId(FirebaseAuth.instance.currentUser!.uid); //TODO. 임시. 나중에 로그인 할 때 객체 상태로 coupleId 가지고 있기.
-    if (coupleId != null) {
-      List<Course>? courseList = await _courseService.readCoursesByCoupleId(coupleId);
-      if(courseList != null) {
-        widget.onCoursesLoaded(courseList);
-      }
-      setState(() {
-        _courseList = courseList;
-        _events = buildEventMap(courseList!);
-      });
+  @override
+  void didUpdateWidget(covariant CalendarMonthSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.reloadToken != widget.reloadToken) {
+      fetchData();
     }
+  }
+
+  Future<void> fetchData() async {
+    final coupleId = await _coupleService.findMyCoupleId(FirebaseAuth.instance.currentUser!.uid);
+    if (!mounted) return;
+
+    if (coupleId == null) {
+      widget.onCoursesLoaded(const []);
+      setState(() {
+        _events = {};
+      });
+      return;
+    }
+
+    final courseList = await _courseService.readCoursesByCoupleId(coupleId);
+    if (!mounted) return;
+
+    final safeList = courseList ?? <Course>[];
+    widget.onCoursesLoaded(safeList);
+
+    setState(() {
+      _events = buildEventMap(safeList);
+    });
   }
 
   @override

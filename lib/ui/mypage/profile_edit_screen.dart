@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'components/gradient_top_bar.dart';
+import 'view_models/user_summary_state.dart';
 import 'widgets/profile_character_section.dart';
 import 'widgets/profile_intro_section.dart';
 import 'widgets/profile_personal_info_section.dart';
@@ -45,6 +46,24 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       _coupleService,
       _userService,
     );
+
+    Future.microtask(() async {
+      final state = context.read<UserSummaryState>();
+      await state.load();
+      _nicknameController.text = state.nickName ?? '';
+
+      final birth = state.birth == null
+          ? ''
+          : DateFormat('yyyy.MM.dd').format(state.birth!);
+      _birthController.text = birth;
+      _introController.text = state.introduce ?? '';
+
+      final gender = state.gender ?? "male";
+      setState(() {
+        _gender = (gender == "male") ? Gender.male : Gender.female;
+        _bearColor = state.bearColor ?? BearColor.pink;
+      });
+    });
   }
 
   @override
@@ -112,21 +131,21 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     );
   }
 
-  void _onSave() {
+  void _onSave() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
     _formKey.currentState?.save();
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    _userService.updateBearColor(uid, _bearColor);
-    _userService.updateNickname(uid, _nicknameController.text.trim());
-    _userService.updateBirth(
+    await _userService.updateBearColor(uid, _bearColor);
+    await _userService.updateNickname(uid, _nicknameController.text.trim());
+    await _userService.updateBirth(
       uid,
       DateFormat('yyyy.MM.dd').parse(_birthController.text.trim()),
     );
-    _userService.updateGender(uid, _gender);
-    _userService.updateIntroduce(uid, _introController.text.trim());
+    await _userService.updateGender(uid, _gender);
+    await _userService.updateIntroduce(uid, _introController.text.trim());
 
-    context.read<CoupleSummaryState>().load();
+    await context.read<CoupleSummaryState>().load();
 
     context.pop();
   }

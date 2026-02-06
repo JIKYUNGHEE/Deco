@@ -1,6 +1,7 @@
 import 'package:deco/config/app_state.dart';
 import 'package:deco/routing/router.dart';
 import 'package:deco/ui/core/themes/deco_theme.dart';
+import 'package:deco/ui/mypage/view_models/user_summary_state.dart';
 import 'package:deco/viewmodels/couple_summary_state.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,8 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [ChangeNotifierProvider.value(value: appState),
-      ChangeNotifierProvider(create: (_) => CoupleSummaryState()..load())],
+      ChangeNotifierProvider(create: (_) => CoupleSummaryState()..load()),
+      ChangeNotifierProvider(create: (_) => UserSummaryState())],
       child: const MyApp(),
     ),
   );

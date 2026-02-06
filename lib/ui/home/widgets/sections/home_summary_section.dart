@@ -3,7 +3,9 @@ import 'package:deco/ui/home/widgets/components/wobble_icon_tile.dart';
 import 'package:deco/ui/home/widgets/components/summary_stat_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
+import '../../../../viewmodels/couple_summary_state.dart';
 import '../components/quick_action_card.dart';
 
 class HomeSummarySection extends StatefulWidget {
@@ -161,9 +163,13 @@ class _HomeSummarySectionState extends State<HomeSummarySection> {
                       title: '새 코스\n만들기',
                       iconGradient: [Color(0xFFFF2FA0), Color(0xFFFF76C8)],
                       selected: _selectedIndex == 0,
-                      onTap: () => {
-                        setState(() => _selectedIndex = 0),
-                        context.go('/create-course'),
+                      onTap: () async {
+                        setState(() => _selectedIndex = 0);
+                        final created = await context.push<bool>('/create-course');
+
+                        if (created == true) {
+                          await context.read<CoupleSummaryState>().load();
+                    }
                       },
                     ),
                   ),

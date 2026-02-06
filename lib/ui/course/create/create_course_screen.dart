@@ -52,7 +52,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
     });
   }
 
-  void _save() {
+  void _save() async {
     List<int> date = _dateController.text.trim().split(".").map(int.parse).toList();
     Course course = Course(
       title: _titleController.text.trim(),
@@ -65,10 +65,10 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
       isPublic: _isPublic,
     );
 
-    _courseService.createCourse(course);
+    await _courseService.createCourse(course);
 
-    context.read<CoupleSummaryState>().load();
-    context.go('/course');  //TODO. 수정 -> 홈에서도 create 갈 수 있음.
+    await context.read<CoupleSummaryState>().load();
+    context.pop(true);
   }
 
   Future<void> pickCover() async {

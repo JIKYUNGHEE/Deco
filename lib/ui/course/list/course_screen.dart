@@ -35,7 +35,7 @@ class _CourseScreenState extends State<CourseScreen> {
   @override
   void initState() {
     super.initState();
-    if(widget.initialTab == 'public') {
+    if (widget.initialTab == 'public') {
       _currentTab = CourseTab.public;
       fetchPublicData();
     } else {
@@ -46,11 +46,11 @@ class _CourseScreenState extends State<CourseScreen> {
 
   Future<void> fetchData() async {
     String? coupleId = await _coupleService.findMyCoupleId(FirebaseAuth.instance.currentUser!.uid); //TODO. 임시. 나중에 로그인 할 때 객체 상태로 coupleId 가지고 있기.
-    if(coupleId != null) {
-     List<Course>? courseList = await _courseService.readCoursesByCoupleId(coupleId);
-     setState(() {
-       _courseList = courseList;
-     });
+    if (coupleId != null) {
+      List<Course>? courseList = await _courseService.readCoursesByCoupleId(coupleId);
+      setState(() {
+        _courseList = courseList;
+      });
     }
   }
 
@@ -72,19 +72,22 @@ class _CourseScreenState extends State<CourseScreen> {
           child: ListView(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
             children: [
-              CourseTabSection(current: _currentTab, onChanged: (tab) {
-                setState(() {
-                  _currentTab = tab;
-                  if(tab == CourseTab.my) {
-                    fetchData();
-                    context.go('/course?tab=my');
-                  } else {
-                    fetchPublicData();
-                    context.go('/course?tab=public');
-                  }
-                });
-              }),
-              SizedBox(height: 8,),
+              CourseTabSection(
+                current: _currentTab,
+                onChanged: (tab) {
+                  setState(() {
+                    _currentTab = tab;
+                    if (tab == CourseTab.my) {
+                      fetchData();
+                      context.go('/course?tab=my');
+                    } else {
+                      fetchPublicData();
+                      context.go('/course?tab=public');
+                    }
+                  });
+                },
+              ),
+              SizedBox(height: 8),
               CourseFilterSection(
                 sort: _sort,
                 period: _period,
@@ -93,9 +96,17 @@ class _CourseScreenState extends State<CourseScreen> {
                 onPeriodChanged: (v) => setState(() => _period = v),
                 onRegionChanged: (v) => setState(() => _region = v),
               ),
-              SizedBox(height: 8,),
-              CourseCtaSection(),
-              SizedBox(height: 16,),
+              SizedBox(height: 8),
+              CourseCtaSection(
+                onCreated: () async {
+                  if (_currentTab == CourseTab.my) {
+                    await fetchData();
+                  } else {
+                    await fetchPublicData();
+                  }
+                },
+              ),
+              SizedBox(height: 16),
               CourseListSection(courseList: _courseList),
             ],
           ),
@@ -103,6 +114,4 @@ class _CourseScreenState extends State<CourseScreen> {
       ],
     );
   }
-
-
 }
