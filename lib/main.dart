@@ -49,6 +49,7 @@ class MyApp extends StatelessWidget {
       darkTheme: DecoTheme.dark(),
       themeMode: ThemeMode.system,
       themeAnimationDuration: Duration.zero,
+      debugShowCheckedModeBanner: false,
     );
   }
 }

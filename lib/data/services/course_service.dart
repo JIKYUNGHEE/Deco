@@ -127,7 +127,7 @@ class CourseService {
 
       if (querySnapshot2.docs.isEmpty) {
         returnCourseData.add(course);
-        break;
+        continue;
       }
 
       final queryDocumentSnapshot2 = querySnapshot2.docs;
