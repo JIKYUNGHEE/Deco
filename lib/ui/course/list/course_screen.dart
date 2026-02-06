@@ -58,6 +58,7 @@ class _CourseScreenState extends State<CourseScreen> {
     List<Course>? courseList = await _courseService.readPublicCourses();
     setState(() {
       _courseList = courseList;
+      print(_courseList!.length);
     });
   }
 

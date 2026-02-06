@@ -148,7 +148,7 @@ class CourseService {
   Future<List<Course>?> readPublicCourses() async {
     final courseCollection = _fs.collection('course');
     final QuerySnapshot<Map<String, dynamic>> querySnapshot1 =
-        await courseCollection.where('isPublic', isEqualTo: true).get();
+        await courseCollection.where('isPublic', isEqualTo: true).orderBy('date', descending: true).get();
 
     if (querySnapshot1.docs.isEmpty) return null;
 
@@ -165,7 +165,7 @@ class CourseService {
 
       if (querySnapshot2.docs.isEmpty) {
         returnCourseData.add(course);
-        break;
+        continue;
       }
 
       final queryDocumentSnapshot2 = querySnapshot2.docs;
