@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../config/app_state.dart';
+import '../../viewmodels/couple_summary_state.dart';
 import '../auth/bear_in_love_illustration.dart';
 import '../core/themes/deco_theme_extension.dart';
 import '../core/widgets/deco_primary_button.dart';
@@ -118,6 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
             String? uid = FirebaseAuth.instance.currentUser?.uid;
             if (uid != null) {
               String? coupleId = await _coupleService.findMyCoupleId(uid);
+              context.read<CoupleSummaryState>().load();
               if (coupleId != null) {  //커플 연결이 되어 있는 경우,
                 context.go('/home');
               } else {

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../../viewmodels/couple_summary_state.dart';
+
 class MyPageSettingsSection extends StatelessWidget {
   const MyPageSettingsSection({super.key});
 
@@ -84,6 +86,7 @@ class MyPageSettingsSection extends StatelessWidget {
 
     if (ok != true) return;
 
+    context.read<CoupleSummaryState>().clear();
     await FirebaseAuth.instance.signOut();
 
     if (!context.mounted) return;
