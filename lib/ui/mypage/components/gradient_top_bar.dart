@@ -5,12 +5,15 @@ class GradientTopBar extends StatelessWidget {
   final String title;
   final VoidCallback onBack;
   final VoidCallback onSave;
+  final Widget? trailing;
 
   const GradientTopBar({
+    super.key,
     required this.gradient,
     required this.title,
     required this.onBack,
     required this.onSave,
+    this.trailing,
   });
 
   @override
@@ -44,7 +47,7 @@ class GradientTopBar extends StatelessWidget {
                   ),
                 ),
               ),
-              _SavePillButton(onTap: onSave),
+              trailing ?? _SavePillButton(onTap: onSave),
             ],
           ),
         ),

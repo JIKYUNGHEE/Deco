@@ -17,8 +17,10 @@ import 'package:deco/ui/terms/terms_agree_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../domain/models/course.dart';
 import '../ui/auth/email_verify_screen.dart';
 import '../ui/auth/signup_screen.dart';
+import '../ui/course/detail/course_detail_screen.dart';
 import '../ui/course/list/course_screen.dart';
 import '../ui/mypage/profile_edit_screen.dart';
 
@@ -111,6 +113,33 @@ GoRouter createRouter(AppState appState) {
       GoRoute(path: '/create-place', parentNavigatorKey: _rootNavigatorKey, builder: (context, state) => CreatePlaceScreen()),
       GoRoute(path: '/profile/edit', parentNavigatorKey: _rootNavigatorKey, builder: (context, state) => ProfileEditScreen()),
       GoRoute(path: '/couple/edit', parentNavigatorKey: _rootNavigatorKey, builder: (context, state) => CoupleEditScreen()),
+      GoRoute(path: '/course/detail', builder: (context, state) {
+          final extra = state.extra;
+
+          Course? course;
+          bool isShared = false;
+
+          if (extra is Map<String, dynamic>) {
+            course = extra['course'] as Course?;
+            isShared = extra['isShared'] as bool? ?? false;
+          } else if (extra is Course) {
+            course = extra;
+          }
+
+          if (course == null) {
+            return const Scaffold(
+              body: Center(
+                child: Text('코스 정보를 찾을 수 없어요.'),
+              ),
+            );
+          }
+
+          return CourseDetailScreen(
+            course: course,
+            isShared: isShared,
+          );
+        },
+      ),
       StatefulShellRoute.indexedStack(
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state, navigationShell) {

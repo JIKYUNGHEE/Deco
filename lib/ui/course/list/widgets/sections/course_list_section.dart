@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../domain/models/course.dart';
 import '../../components/course_card.dart';
 
 class CourseListSection extends StatelessWidget {
   final List<Course>? courseList;
+  final bool isSharedCourse;
 
-  const CourseListSection({super.key, required this.courseList});
+  const CourseListSection({super.key, required this.courseList, this.isSharedCourse = false});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,15 @@ class CourseListSection extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: courseList?.length ?? 0,
             separatorBuilder: (_, __) => const SizedBox(height: 12),
-            itemBuilder: (_, i) => CourseCard(data: courseList![i], onTap: () {}),
+            itemBuilder: (_, i) => CourseCard(data: courseList![i], onTap: () {
+              context.push(
+                '/course/detail',
+                extra: {
+                  'course': courseList![i],
+                  'isShared': isSharedCourse,
+                }
+              );
+            }),
           ),
 
       ],

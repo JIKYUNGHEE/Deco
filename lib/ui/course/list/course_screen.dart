@@ -108,7 +108,7 @@ class _CourseScreenState extends State<CourseScreen> {
                 },
               ),
               SizedBox(height: 16),
-              CourseListSection(courseList: _courseList),
+              CourseListSection(courseList: _courseList, isSharedCourse: _currentTab == CourseTab.public,),
             ],
           ),
         ),
